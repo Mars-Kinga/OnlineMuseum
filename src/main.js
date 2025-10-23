@@ -1,4 +1,5 @@
-import { createApp } from "vue";
-import Desktop from "./screens/Desktop.vue";
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
 
-createApp(Desktop).mount("#app");
+createApp(App).use(router).mount('#app');

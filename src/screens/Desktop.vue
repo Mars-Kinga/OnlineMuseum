@@ -5,6 +5,27 @@
     <img class="aigei-com" alt="Aigei com" src="/img/aigei-com-2.svg" />
     <!-- 主背景图层（aigei-com-1.svg）：铺满画布的底图 -->
     <img class="img" alt="Aigei com" src="/img/aigei-com-1.svg" />
+    <!-- 地图国家圆点：五个国家中心的小蓝点，可悬停和点击 -->
+    <div class="map-dots">
+      <button
+        v-for="dot in mapDots"
+        :key="dot.id"
+        class="map-dot"
+        :style="{ left: dot.left, top: dot.top }"
+        :aria-label="dot.name"
+        @click="onDotClick(dot)"
+        @mouseenter="onDotHover(dot)" @mouseleave="onDotLeave"
+      ></button>
+      <!-- 国家简介预览框 -->
+            <div
+        v-if="hoveredDot"
+        class="tooltip tooltip--right"
+        :style="{ left: hoveredDot.left, top: hoveredDot.top }"
+      >
+        <h3 class="tooltip-title">{{ getTooltip(hoveredDot).title }}</h3>
+        <p class="tooltip-text">{{ getTooltip(hoveredDot).content }}</p>
+      </div>
+    </div>
     <!-- 顶部白色导航条背景（rectangle） -->
     <div class="rectangle" />
     <!-- 右上角用户信息区（头像/用户名/分隔线） -->
@@ -65,9 +86,8 @@
 </template>
 
 <script>
-export default {
-  name: "Desktop",
-};
+import DesktopScript from './DesktopScript.js';
+export default DesktopScript;
 </script>
 
 <style>
@@ -83,30 +103,52 @@ export default {
 
 /* 背景装饰SVG（大铺底） */
 .desktop .aigei-com {
-  height: 212.99%;
+  height: 100%;
   left: 0;
+  right: 0;
   position: absolute;
   top: 0;
-  width: 209.24%;
+  width: absolute;
 }
 
 /* 主背景图层 */
 .desktop .img {
-  height: 1024px;
+  height: 100%;
   left: 0;
   position: absolute;
   top: 0;
-  width: 1440px;
+  width: absolute;
+}
+
+/* 地图国家圆点层：充满画布，允许点击 */
+.desktop .map-dots {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* 只让圆点本身响应 */
+  z-index: 5;
+}
+
+/* 单个蓝色圆点（默认 12px，可按需改） */
+.desktop .map-dot {
+  position: absolute;
+  width: 12px;
+  height: 15px;
+  border-radius: 50%;
+  background: #185592;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 2px rgba(19, 70, 121, 0.3);
+
+  pointer-events: auto;
 }
 
 /* 顶部白色导航条背景 */
 .desktop .rectangle {
   background-color: #ffffff;
-  height: 127px;
+  height: 100px;
   left: 0;
   position: absolute;
   top: 0;
-  width: 1440px;
+  width: 100%;
 }
 
 /* 右上角用户信息区容器 */
@@ -117,7 +159,7 @@ export default {
   gap: 12px;
   position: absolute;
   right: 70px;
-  top: 41px;
+  top: 30px;
   width: 191px;
 }
 
@@ -173,9 +215,9 @@ export default {
 /* 顶部中部导航与标题总容器 */
 .desktop .group {
   height: 72px;
-  left: calc(50.00% - 683px);
+  left: calc(50.00% - 700px);
   position: absolute;
-  top: 28px;
+  top: 10px;
   width: 983px;
 }
 
@@ -186,10 +228,11 @@ export default {
   border-radius: 50px;
   display: flex;
   height: 44px;
-  left: calc(50.00% - 108px);
+  left: calc(50.00% - 150px);
   position: absolute;
   top: 14px;
-  width: 600px;
+  width: 720px;
+  overflow: visible;
 }
 
 /* 导航项：激活态（首页） */
@@ -205,7 +248,7 @@ export default {
   justify-content: center;
   padding: 10px 34px;
   position: relative;
-  width: 100px;
+  width: 120px;
 }
 
 /* 导航文字：首页 */
@@ -233,7 +276,7 @@ export default {
   justify-content: center;
   padding: 10px 34px;
   position: relative;
-  width: 100px;
+  width: 120px;
 }
 
 /* 导航文字：3D展厅 */
@@ -302,7 +345,7 @@ export default {
 .desktop .text-wrapper-6 {
   color: #2b2b2b;
   font-family: "eryaxindahei-Regular", Helvetica;
-  font-size: 40px;
+  font-size: 35px;
   font-weight: 400;
   letter-spacing: 0;
   line-height: normal;
@@ -327,11 +370,11 @@ export default {
   font-family: "Source Han Sans CN-Medium", Helvetica;
   font-size: 20px;
   font-weight: 500;
-  left: 1125px;
+  left: 1150px;
   letter-spacing: 0;
   line-height: normal;
   position: absolute;
-  top: 57px;
+  top: 40px;
 }
 
 /* 语言切换：中 */
@@ -343,5 +386,60 @@ export default {
 .desktop .text-wrapper-7 {
   color: #939393;
   font-size: 10px;
+}
+
+/* 导航项基础过渡设置，保证悬停有动画 */
+.desktop .frame-3,
+.desktop .div-wrapper,
+.desktop .map-dot {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  will-change: transform;
+  transform-origin: center;
+  cursor: pointer;
+  position: relative; /* 便于 z-index 生效 */
+  z-index: 1;
+}
+
+/* 导航项悬停放大效果 */
+.desktop .frame-3:hover,
+.desktop .div-wrapper:hover,
+.desktop .map-dot:hover {
+  transform: scale(1.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* 国家简介提示框样式 */
+.desktop .tooltip {
+  position: absolute;
+  transform: translate(-50%, -110%);
+  background: #ffffff;
+  color: #000000;
+  border-radius: 10px;
+  padding: 16px;
+  max-width: 300px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 20;
+}
+
+.desktop .tooltip-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* 靠右显示，避免遮挡，且不抢事件避免闪烁 */
+.desktop .tooltip--right {
+  transform: translate(14px, -100%); /* 向右偏移，垂直居中于圆点 */
+  max-width: 320px;
+  pointer-events: none; /* 悬停时不抢事件，避免闪烁 */
+}
+
+.desktop .tooltip-text {
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: justify;
 }
 </style>
