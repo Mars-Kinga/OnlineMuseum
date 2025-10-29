@@ -143,24 +143,28 @@ export default DesktopScript;
 
 /* 顶部白色导航条背景 */
 .desktop .rectangle {
-  background-color: #ffffff;
-  height: 100px;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 100%;
+background-color: #ffffff;
+height: 90px;
+left: 0;
+position: fixed;
+top: 0;
+width: 100%;
+z-index: 100; /* 顶部悬浮 */
+border-radius: 0 0 52px 52px; /* 圆角下缘 */
+box-shadow: 4px 12px 9px rgba(50, 20, 6, 0.4); /* 阴影 */
 }
 
 /* 右上角用户信息区容器 */
 .desktop .frame {
-  align-items: flex-start;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  position: absolute;
-  right: 70px;
-  top: 30px;
-  width: 191px;
+align-items: flex-start;
+display: flex;
+flex-direction: column;
+gap: 12px;
+position: fixed;
+right: 70px;
+top: 30px;
+width: 191px;
+z-index: 110; /* 盖在顶栏上 */
 }
 
 /* 用户信息一行（头像 + 用户名 + 提示图标） */
@@ -214,11 +218,12 @@ export default DesktopScript;
 
 /* 顶部中部导航与标题总容器 */
 .desktop .group {
-  height: 72px;
-  left: calc(50.00% - 700px);
-  position: absolute;
-  top: 10px;
-  width: 983px;
+height: 72px;
+left: calc(50.00% - 700px);
+position: fixed;
+top: 10px;
+width: 983px;
+z-index: 110; /* 盖在顶栏上 */
 }
 
 /* 导航胶囊容器 */
@@ -277,6 +282,21 @@ export default DesktopScript;
   padding: 10px 34px;
   position: relative;
   width: 120px;
+  background-color: transparent;
+}
+
+.desktop .frame-3:hover {
+  background-color: #ffffff;
+}
+
+.desktop .frame-3:hover .text-wrapper-3,
+.desktop .frame-3:hover .text-wrapper-4,
+.desktop .frame-3:hover .text-wrapper-5 {
+  color: #000000;
+}
+
+.desktop .frame-3 {
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* 导航文字：3D展厅 */
@@ -344,9 +364,9 @@ export default DesktopScript;
 /* 标题文字：丝路长廊 */
 .desktop .text-wrapper-6 {
   color: #2b2b2b;
-  font-family: "eryaxindahei-Regular", Helvetica;
-  font-size: 35px;
-  font-weight: 400;
+  font-family: 'Ma Shan Zheng', 'Source Han Sans CN', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+  font-size: 45px;
+  font-weight: 450;
   letter-spacing: 0;
   line-height: normal;
   margin-top: -1.00px;
@@ -366,15 +386,16 @@ export default DesktopScript;
 
 /* 语言切换容器：中/英 */
 .desktop .p {
-  color: transparent;
-  font-family: "Source Han Sans CN-Medium", Helvetica;
-  font-size: 20px;
-  font-weight: 500;
-  left: 1150px;
-  letter-spacing: 0;
-  line-height: normal;
-  position: absolute;
-  top: 40px;
+color: transparent;
+font-family: "Source Han Sans CN-Medium", Helvetica;
+font-size: 20px;
+font-weight: 500;
+left: 1150px;
+letter-spacing: 0;
+line-height: normal;
+position: fixed;
+top: 40px;
+z-index: 110; /* 盖在顶栏上 */
 }
 
 /* 语言切换：中 */
@@ -442,4 +463,7 @@ export default DesktopScript;
   line-height: 1.5;
   text-align: justify;
 }
+
+/* 占位：避免内容被固定顶栏遮挡 */
+.desktop { padding-top: 120px; }
 </style>
