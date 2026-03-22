@@ -1,62 +1,62 @@
 <template>
+  <!-- 页面主容器：整张画布（1024x1440），所有元素的定位参照 -->
   <div class="desktop" data-model-id="45:2">
-    <div class="map-stage" @click="onMapClick">
-      <div class="map-wrapper">
-        <img
-          class="bg-image"
-          ref="bgImageRef"
-          alt="Background"
-          src="/img/aigei-com-2.svg"
-        />
-        <img
-          class="map-image"
-          ref="mapImageRef"
-          @load="onMapImageLoad"
-          alt="Map"
-          src="/img/aigei-com-1.svg"
-        />
-        <div class="map-overlay" ref="mapOverlayRef">
-          <button
-            v-for="dot in mapDots"
-            :key="dot.id"
-            class="map-dot"
-            :style="getDotStyle(dot)"
-            :aria-label="dot.name"
-            @click.stop="toggleDot(dot)"
-            @mouseenter="hoveredDot = dot"
-            @mouseleave="hoveredDot = null"
-          ></button>
-          <div
-            v-if="activeDot || hoveredDot"
-            class="tooltip"
-            :class="getTooltipPosition(activeDot || hoveredDot)"
-            :style="getTooltipStyle(activeDot || hoveredDot)"
-          >
-            <h3 class="tooltip-title">
-              {{ getTooltip(activeDot || hoveredDot).title }}
-            </h3>
-            <p class="tooltip-text">
-              {{ getTooltip(activeDot || hoveredDot).content }}
-            </p>
-          </div>
-        </div>
+    <!-- 背景装饰SVG（aigei-com-2.svg）：超大幅铺底的装饰图形 -->
+    <img class="aigei-com" alt="Aigei com" src="/img/aigei-com-2.svg" />
+    <!-- 主背景图层（aigei-com-1.svg）：铺满画布的底图 -->
+    <img class="img" alt="Aigei com" src="/img/aigei-com-1.svg" />
+    <!-- 地图国家圆点：五个国家中心的小蓝点，可悬停和点击 -->
+    <div class="map-dots">
+      <button
+        v-for="dot in mapDots"
+        :key="dot.id"
+        class="map-dot"
+        :style="{ left: dot.left, top: dot.top }"
+        :aria-label="dot.name"
+        @click.stop="toggleDot(dot)"
+        @mouseenter="hoveredDot = dot"
+        @mouseleave="hoveredDot = null"
+      ></button>
+      <!-- 国家简介预览框 -->
+      <div
+        v-if="activeDot || hoveredDot"
+        class="tooltip tooltip--right"
+        :style="{
+          left: (activeDot || hoveredDot).left,
+          top: (activeDot || hoveredDot).top,
+        }"
+      >
+        <h3 class="tooltip-title">
+          {{ getTooltip(activeDot || hoveredDot).title }}
+        </h3>
+        <p class="tooltip-text">
+          {{ getTooltip(activeDot || hoveredDot).content }}
+        </p>
       </div>
     </div>
 
+    <!-- 顶部白色导航条背景 -->
     <header class="header-container">
+      <!-- 左侧标题区：Logo 图标 + 标题"丝路长廊" -->
       <div class="header-left">
         <div class="frame-4">
+          <!-- 标题左侧 Logo 图标（mask-group.png） -->
           <img class="mask-group" alt="Mask group" src="/img/mask-group.png" />
+          <!-- 标题文字：丝路长廊 -->
           <div class="text-wrapper-6">丝路长廊</div>
         </div>
       </div>
 
+      <!-- 顶部中部导航与标题区 -->
       <div class="header-center">
         <div class="group">
+          <!-- 导航胶囊容器（灰底圆角条），包含首页/3D展厅/文化对比/时空之旅/每日瑰宝/互动区 -->
           <div class="frame-2">
+            <!-- 导航项：当前激活的"首页"（白底，带边框） -->
             <div class="div-wrapper">
               <div class="text-wrapper-2">首页</div>
             </div>
+            <!-- 导航项：未激活状态（灰边框）-> 包含 3D展厅 / 文化对比 / 时空之旅 / 每日瑰宝 / 互动区 -->
             <div class="frame-3">
               <div class="text-wrapper-3">3D展厅</div>
             </div>
@@ -76,25 +76,34 @@
         </div>
       </div>
 
+      <!-- 右上角用户信息区（头像/用户名/分隔线） -->
       <div class="header-right">
+        <!-- 语言切换文案：中/英 -->
         <div class="p">
           <span class="span">中</span>
           <span class="text-wrapper-7">/英</span>
         </div>
+        <!-- 用户信息区容器 -->
         <div class="frame">
+          <!-- 用户信息一行：左侧图标、用户名、右侧小问号 -->
           <div class="div">
+            <!-- 用户头像/应用图标（ps-4.png）32x32 -->
             <img class="ps" alt="Ps" src="/img/ps-4.png" />
+            <!-- 用户名文案：kitten123 -->
             <div class="text-wrapper">kitten123</div>
+            <!-- 小问号/帮助提示图标（3x图 PNG） -->
             <img
               class="element-BE"
               alt="Element BE"
               src="/img/3-e5-9b-be-e6-a0-87-3x-1.png"
             />
           </div>
+          <!-- 细分隔线（vector-1.svg）位于用户信息区下方 -->
           <img class="vector" alt="Vector" src="/img/vector-1.svg" />
         </div>
       </div>
 
+      <!-- 汉堡菜单按钮：移动端显示 -->
       <button class="hamburger-btn" @click="isMenuOpen = !isMenuOpen">
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
@@ -102,7 +111,9 @@
       </button>
     </header>
 
+    <!-- 移动端菜单：汉堡菜单展开时显示 -->
     <div class="mobile-menu" :class="{ open: isMenuOpen }">
+      <!-- 移动端用户信息区 -->
       <div class="mobile-user-section">
         <div class="p">
           <span class="span">中</span>
@@ -120,6 +131,7 @@
           </div>
         </div>
       </div>
+      <!-- 移动端导航 -->
       <div class="mobile-nav">
         <div class="nav-item active">首页</div>
         <div class="nav-item">3D展厅</div>
@@ -135,112 +147,37 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 
+// 汉堡菜单开关状态
 const isMenuOpen = ref(false);
+// 当前悬停的地图圆点
 const hoveredDot = ref(null);
+// 当前激活的地图圆点
 const activeDot = ref(null);
+// 是否为移动端（宽度 <= 768px）
 const isMobile = ref(window.innerWidth <= 768);
-const mapImageRef = ref(null);
-const mapOverlayRef = ref(null);
-const bgImageRef = ref(null);
 
-const syncOverlayToImage = () => {
-  if (!mapImageRef.value || !mapOverlayRef.value) return;
-
-  const imgRect = mapImageRef.value.getBoundingClientRect();
-  const wrapperRect = mapImageRef.value.parentElement?.getBoundingClientRect();
-
-  if (!wrapperRect) return;
-
-  const left = imgRect.left - wrapperRect.left;
-  const top = imgRect.top - wrapperRect.top;
-
-  mapOverlayRef.value.style.left = `${left}px`;
-  mapOverlayRef.value.style.top = `${top}px`;
-  mapOverlayRef.value.style.width = `${imgRect.width}px`;
-  mapOverlayRef.value.style.height = `${imgRect.height}px`;
-
-  if (bgImageRef.value) {
-    const bgRect = bgImageRef.value.getBoundingClientRect();
-    console.log("=== Bounding Boxes ===");
-    console.log("bgImage:", {
-      left: bgRect.left,
-      top: bgRect.top,
-      width: bgRect.width,
-      height: bgRect.height,
-    });
-    console.log("mapImage:", {
-      left: imgRect.left,
-      top: imgRect.top,
-      width: imgRect.width,
-      height: imgRect.height,
-    });
-    console.log("Overlay position:", {
-      left,
-      top,
-      width: imgRect.width,
-      height: imgRect.height,
-    });
-  }
-};
-
-const onMapImageLoad = () => {
-  syncOverlayToImage();
-};
-
+// 处理窗口大小变化，更新移动端状态
 const handleResize = () => {
   isMobile.value = window.innerWidth <= 768;
-  syncOverlayToImage();
 };
 
+// 组件挂载时添加窗口大小监听
 onMounted(() => {
   window.addEventListener("resize", handleResize);
-  setTimeout(syncOverlayToImage, 100);
 });
 
+// 组件卸载时移除窗口大小监听
 onUnmounted(() => {
   window.removeEventListener("resize", handleResize);
 });
 
-const SVG_WIDTH = 1440;
-const SVG_HEIGHT = 1024;
-
-const getDotStyle = (dot) => {
-  const leftPercent = (dot.x / SVG_WIDTH) * 100;
-  const topPercent = (dot.y / SVG_HEIGHT) * 100;
-  return {
-    left: `${leftPercent}%`,
-    top: `${topPercent}%`,
-  };
-};
-
-const getTooltipPosition = (dot) => {
-  if (!dot) return "";
-
-  const left = (dot.x / SVG_WIDTH) * 100;
-  const top = (dot.y / SVG_HEIGHT) * 100;
-
-  if (left < 20) return "tooltip--right";
-  if (left > 80) return "tooltip--left";
-  if (top < 30) return "tooltip--bottom";
-  return "tooltip--top";
-};
-
-const getTooltipStyle = (dot) => {
-  if (!dot) return {};
-  const leftPercent = (dot.x / SVG_WIDTH) * 100;
-  const topPercent = (dot.y / SVG_HEIGHT) * 100;
-  return {
-    left: `${leftPercent}%`,
-    top: `${topPercent}%`,
-  };
-};
-
+// 五个国家中心点的位置（百分比，便于自适应）
 const mapDots = ref([
   {
     id: "kz",
     name: "哈萨克斯坦",
-    x: 360,
-    y: 410,
+    left: "25%",
+    top: "40%",
     title: "哈萨克斯坦",
     content: `哈萨克斯坦
 作为世界最大的内陆国，哈萨克斯坦地处中亚北部。
@@ -250,8 +187,8 @@ const mapDots = ref([
   {
     id: "uz",
     name: "乌兹别克斯坦",
-    x: 259,
-    y: 492,
+    left: "18%",
+    top: "48%",
     title: "乌兹别克斯坦",
     content: `乌兹别克斯坦
 乌兹别克斯坦位于中亚腹地，这里是中亚文明的心脏地带，撒马尔罕、布哈拉等古城曾是丝绸之路上璀璨的明珠，它们见证了帖木儿帝国的辉煌与波斯、伊斯兰文化的交融。传统手工艺如丝绸纺织、陶瓷制作延续至今，热闹的巴扎与抓饭盛宴更是彰显了当地的淳朴民风。
@@ -259,30 +196,29 @@ const mapDots = ref([
 如今，该国通过出口棉花、黄金及能源拓展贸易，并借力丝绸之路遗产发展旅游与经济走廊，重塑中亚交通纽带的角色。`,
   },
   {
+    id: "tm",
+    name: "土库曼斯坦",
+    left: "15%",
+    top: "53%",
+    title: "土库曼斯坦",
+    content: `土库曼斯坦
+土库曼斯坦西邻里海，卡拉库姆沙漠覆盖大部分国土。在此，部落文化根基深厚，地毯编织与阿哈尔捷金马（亦称汗血宝马）的养殖是国家的文化符号。这片土地曾是丝路商队穿越卡拉库姆沙漠的重要补给站，将中亚的绿洲城市与里海、高加索地区相连。历史上，古老的草原部落传统与后来传入的伊斯兰苏菲派信仰相互交织，形成了土库曼人特有的部落文化与宗教信仰体系。古丝绸之路途径梅尔夫等绿洲城市贯通此地，现今则通过能源管道与跨境运输线，延续着东西方交换的使命。`,
+  },
+  {
     id: "tj",
     name: "塔吉克斯坦",
-    x: 360,
-    y: 563,
+    left: "25%",
+    top: "55%",
     title: "塔吉克斯坦",
     content: `塔吉克斯坦
 塔吉克斯坦坐拥帕米尔高原的壮丽山川，山地占其总面积九成，被称为"中亚屋脊"。其文化深受波斯传统影响，波斯语为官方语言，诺鲁孜节与古典诗歌始终是当地人民的生活精髓。
 帕米尔高原通道作为连接中国与波斯的关键路途，商队们不仅带来了货物，也曾使琐罗亚斯德教、佛教和摩尼教在此流行，最终伊斯兰文化通过萨曼王朝的统治在这里深深扎根。如今，中塔合作正重启这条古道，助力贸易与基础设施建设。`,
   },
   {
-    id: "tm",
-    name: "土库曼斯坦",
-    x: 216,
-    y: 543,
-    title: "土库曼斯坦",
-    content: `土库曼斯坦
-土库曼斯坦西邻里海，卡拉库姆沙漠覆盖大部分国土。在此，部落文化根基深厚，地毯编织与阿哈尔捷金马（亦称汗血宝马）的养殖是国家的文化符号。这片土地曾是丝路商队穿越卡拉库姆沙漠的重要补给站，将中亚的绿洲城市与里海、高加索地区相连。
-历史上，古老的草原部落传统与后来传入的伊斯兰苏菲派信仰相互交织，形成了土库曼人特有的部落文化与宗教信仰体系。古丝绸之路途径梅尔夫等绿洲城市贯通此地，现今则通过能源管道与跨境运输线，延续着东西方交换的使命。`,
-  },
-  {
     id: "kg",
     name: "吉尔吉斯斯坦",
-    x: 432,
-    y: 492,
+    left: "30%",
+    top: "48%",
     title: "吉尔吉斯斯坦",
     content: `吉尔吉斯斯坦
 吉尔吉斯斯坦以天山山脉的雄奇风光闻名，湖泊与牧场滋养着游牧传统，伊塞克湖更是古商道上的明珠。这片天山脚下的土地是游牧文化与定居文明交汇的前沿。这里，伟大的史诗《玛纳斯》不仅是一部文学作品，更是承载着吉尔吉斯人历史、萨满信仰与后来伊斯兰化过程的文化宝库。
@@ -290,6 +226,7 @@ const mapDots = ref([
   },
 ]);
 
+// 切换地图圆点的激活状态
 const toggleDot = (dot) => {
   if (activeDot.value?.id === dot.id) {
     activeDot.value = null;
@@ -298,81 +235,77 @@ const toggleDot = (dot) => {
   }
 };
 
-const onMapClick = (e) => {
-  if (!e.target.closest(".map-dot")) {
-    activeDot.value = null;
-  }
+// 获取提示框的位置：根据圆点位置决定提示框显示方向
+const getTooltipPosition = (dot) => {
+  if (!dot) return "";
+
+  const left = parseFloat(dot.left);
+  const top = parseFloat(dot.top);
+
+  if (left < 20) return "tooltip--right";
+  if (left > 80) return "tooltip--left";
+  if (top < 30) return "tooltip--bottom";
+  return "tooltip--top";
 };
 
+// 获取提示框的标题和内容
 const getTooltip = (dot) => {
   return { title: dot.title || dot.name, content: dot.content || "" };
 };
 </script>
 
-<style scoped>
+<style>
+/* 版面说明：以下样式与上方注释一一对应，便于排版调整 */
+/* 页面主容器 */
 .desktop {
   background-color: #e1e1e1;
-  min-height: 100vh;
-  width: 100%;
-  position: relative;
-}
-
-.desktop .map-stage {
+  min-height: 1024px;
+  min-width: 1440px;
   position: relative;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding-top: 120px;
 }
 
-.desktop .map-wrapper {
-  position: relative;
-  display: inline-block;
-}
-
-.desktop .bg-image,
-.desktop .map-image {
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: 100vw;
-  max-height: calc(100vh - 120px);
-}
-
-.desktop .bg-image {
+/* 背景装饰SVG（大铺底） */
+.desktop .aigei-com {
+  height: 100%;
+  left: 0;
+  right: 0;
   position: absolute;
   top: 0;
+  width: 100%;
+}
+
+/* 主背景图层 */
+.desktop .img {
+  height: 100%;
   left: 0;
-  z-index: 1;
-}
-
-.desktop .map-image {
-  position: relative;
-  z-index: 2;
-}
-
-.desktop .map-overlay {
   position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+/* 地图国家圆点层：充满画布，允许点击 */
+.desktop .map-dots {
+  position: absolute;
+  inset: 0;
   pointer-events: none;
   z-index: 5;
 }
 
+/* 单个蓝色圆点（默认 12px，可按需改） */
 .desktop .map-dot {
   position: absolute;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 15px;
   border-radius: 50%;
   background: #185592;
   border: 2px solid #ffffff;
   box-shadow: 0 0 0 2px rgba(19, 70, 121, 0.3);
   pointer-events: auto;
-  cursor: pointer;
-  transform: translate(-50%, -50%);
-  transform-origin: center center;
-  z-index: 10;
-  transition: transform 0.1s ease;
 }
 
+/* 顶部白色导航条背景 */
 .header-container {
   background-color: #ffffff;
   height: 90px;
@@ -386,8 +319,11 @@ const getTooltip = (dot) => {
   justify-content: space-between;
   padding: 0 20px;
   box-sizing: border-box;
+  border-radius: 0 0 52px 52px;
+  box-shadow: 4px 12px 9px rgba(50, 20, 6, 0.4);
 }
 
+/* 左侧标题区容器 */
 .header-left {
   display: flex;
   align-items: center;
@@ -395,6 +331,7 @@ const getTooltip = (dot) => {
   min-width: fit-content;
 }
 
+/* 顶部中部导航与标题区容器 */
 .header-center {
   display: flex;
   align-items: center;
@@ -404,6 +341,7 @@ const getTooltip = (dot) => {
   padding: 0 20px;
 }
 
+/* 右上角用户信息区容器 */
 .header-right {
   display: flex;
   align-items: center;
@@ -411,6 +349,7 @@ const getTooltip = (dot) => {
   flex-shrink: 0;
 }
 
+/* 标题左侧 Logo 图标 */
 .desktop .mask-group {
   height: 40px;
   object-fit: cover;
@@ -418,6 +357,7 @@ const getTooltip = (dot) => {
   width: 40px;
 }
 
+/* 标题文字：丝路长廊 */
 .desktop .text-wrapper-6 {
   color: #000000;
   font-family: "Ma Shan Zheng", Helvetica;
@@ -430,6 +370,7 @@ const getTooltip = (dot) => {
   width: fit-content;
 }
 
+/* 用户头像/应用图标 */
 .desktop .ps {
   height: 32px;
   object-fit: cover;
@@ -437,6 +378,7 @@ const getTooltip = (dot) => {
   width: 32px;
 }
 
+/* 用户名文本 */
 .desktop .text-wrapper {
   color: #000000;
   font-family: "Source Han Sans CN-Medium", Helvetica;
@@ -448,6 +390,7 @@ const getTooltip = (dot) => {
   width: fit-content;
 }
 
+/* 小问号/帮助图标 */
 .desktop .element-BE {
   aspect-ratio: 1;
   height: 26.67px;
@@ -456,6 +399,7 @@ const getTooltip = (dot) => {
   width: 26.67px;
 }
 
+/* 细分隔线 */
 .desktop .vector {
   height: 1.33px;
   margin-bottom: -0.67px;
@@ -463,6 +407,7 @@ const getTooltip = (dot) => {
   width: 190.67px;
 }
 
+/* 顶部中部导航与标题总容器 */
 .desktop .group {
   height: 72px;
   display: flex;
@@ -471,6 +416,7 @@ const getTooltip = (dot) => {
   flex-wrap: nowrap;
 }
 
+/* 导航胶囊容器 */
 .desktop .frame-2 {
   align-items: center;
   background-color: #e6e6e6;
@@ -488,6 +434,7 @@ const getTooltip = (dot) => {
   padding: 0 8px;
 }
 
+/* 导航项：激活态（首页） */
 .desktop .div-wrapper {
   align-items: center;
   background-color: #ffffff;
@@ -500,11 +447,12 @@ const getTooltip = (dot) => {
   justify-content: center;
   padding: 8px 16px;
   position: relative;
-  width: auto;
-  min-width: fit-content;
-  flex-shrink: 1;
+  width: 100px;
+  min-width: 100px;
+  flex-shrink: 0;
 }
 
+/* 导航文字：首页 */
 .desktop .text-wrapper-2 {
   color: #000000;
   font-family: "Source Han Sans CN-Medium", Helvetica;
@@ -518,6 +466,7 @@ const getTooltip = (dot) => {
   white-space: nowrap;
 }
 
+/* 导航项：未激活态 */
 .desktop .frame-3 {
   align-items: center;
   border: 2px solid;
@@ -529,16 +478,18 @@ const getTooltip = (dot) => {
   justify-content: center;
   padding: 8px 16px;
   position: relative;
-  width: auto;
-  min-width: fit-content;
+  width: 100px;
+  min-width: 100px;
   background-color: transparent;
-  flex-shrink: 1;
+  flex-shrink: 0;
 }
 
+/* 导航项悬停效果 */
 .desktop .frame-3:hover {
   background-color: #ffffff;
 }
 
+/* 导航文字：3D展厅 / 文化对比 / 时空之旅 / 每日瑰宝 / 互动区 */
 .desktop .text-wrapper-3,
 .desktop .text-wrapper-4,
 .desktop .text-wrapper-5 {
@@ -554,12 +505,14 @@ const getTooltip = (dot) => {
   width: fit-content;
 }
 
+/* 左侧标题区：Logo + 标题 */
 .desktop .frame-4 {
   align-items: center;
   display: inline-flex;
   gap: 13px;
 }
 
+/* 右上角用户信息区容器 */
 .desktop .frame {
   align-items: flex-start;
   display: flex;
@@ -567,6 +520,7 @@ const getTooltip = (dot) => {
   gap: 12px;
 }
 
+/* 用户信息一行（头像 + 用户名 + 提示图标） */
 .desktop .div {
   align-items: center;
   display: inline-flex;
@@ -574,6 +528,7 @@ const getTooltip = (dot) => {
   position: relative;
 }
 
+/* 语言切换容器：中/英 */
 .desktop .p {
   color: transparent;
   font-family: "Source Han Sans CN-Medium", Helvetica;
@@ -583,17 +538,21 @@ const getTooltip = (dot) => {
   line-height: normal;
 }
 
+/* 语言切换：中 */
 .desktop .span {
   color: #000000;
 }
 
+/* 语言切换：英（小字号） */
 .desktop .text-wrapper-7 {
   color: #939393;
   font-size: 10px;
 }
 
+/* 导航项基础过渡设置，保证悬停有动画 */
 .desktop .frame-3,
-.desktop .div-wrapper {
+.desktop .div-wrapper,
+.desktop .map-dot {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   will-change: transform;
   transform-origin: center;
@@ -602,16 +561,10 @@ const getTooltip = (dot) => {
   z-index: 1;
 }
 
-.desktop .map-dot {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  will-change: transform;
-  transform-origin: center;
-  cursor: pointer;
-  z-index: 1;
-}
-
+/* 导航项悬停放大效果 */
 .desktop .frame-3:hover,
-.desktop .div-wrapper:hover {
+.desktop .div-wrapper:hover,
+.desktop .map-dot:hover {
   transform: scale(1.06);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -619,102 +572,41 @@ const getTooltip = (dot) => {
   z-index: 10;
 }
 
-.desktop .map-dot:hover {
-  transform: translate(-50%, -50%) scale(1.06);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
-  z-index: 10;
-}
-
+/* 国家简介提示框样式 */
 .desktop .tooltip {
   position: absolute;
+  transform: translate(-50%, -110%);
   background: #ffffff;
   color: #000000;
   border-radius: 10px;
   padding: 16px;
-  max-width: 280px;
+  max-width: 300px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 100;
-  pointer-events: auto;
+  z-index: 20;
 }
 
+/* 提示框标题 */
 .desktop .tooltip-title {
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 8px;
 }
 
+/* 靠右显示，避免遮挡，且不抢事件避免闪烁 */
+.desktop .tooltip--right {
+  transform: translate(14px, -100%);
+  max-width: 320px;
+  pointer-events: none;
+}
+
+/* 提示框文本 */
 .desktop .tooltip-text {
   font-size: 13px;
   line-height: 1.5;
   text-align: justify;
 }
 
-.desktop .tooltip--top {
-  transform: translate(-50%, calc(-100% - 12px));
-}
-
-.desktop .tooltip--top::after {
-  content: "";
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 8px solid #ffffff;
-}
-
-.desktop .tooltip--bottom {
-  transform: translate(-50%, 12px);
-}
-
-.desktop .tooltip--bottom::after {
-  content: "";
-  position: absolute;
-  top: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-bottom: 8px solid #ffffff;
-}
-
-.desktop .tooltip--left {
-  transform: translate(calc(-100% - 12px), -50%);
-}
-
-.desktop .tooltip--left::after {
-  content: "";
-  position: absolute;
-  right: -8px;
-  top: 50%;
-  transform: translateY(-50%);
-  border-top: 8px solid transparent;
-  border-bottom: 8px solid transparent;
-  border-left: 8px solid #ffffff;
-}
-
-.desktop .tooltip--right {
-  transform: translate(12px, -50%);
-}
-
-.desktop .tooltip--right::after {
-  content: "";
-  position: absolute;
-  left: -8px;
-  top: 50%;
-  transform: translateY(-50%);
-  border-top: 8px solid transparent;
-  border-bottom: 8px solid transparent;
-  border-right: 8px solid #ffffff;
-}
-
-.desktop {
-  padding-top: 120px;
-}
-
+/* 汉堡菜单按钮 */
 .hamburger-btn {
   display: none;
   flex-direction: column;
@@ -730,6 +622,7 @@ const getTooltip = (dot) => {
   z-index: 120;
 }
 
+/* 汉堡菜单线条 */
 .hamburger-line {
   width: 28px;
   height: 3px;
@@ -738,6 +631,7 @@ const getTooltip = (dot) => {
   transition: all 0.3s ease;
 }
 
+/* 移动端菜单 */
 .mobile-menu {
   display: none;
   position: fixed;
@@ -752,10 +646,12 @@ const getTooltip = (dot) => {
   transition: max-height 0.3s ease;
 }
 
+/* 移动端菜单展开状态 */
 .mobile-menu.open {
   max-height: 500px;
 }
 
+/* 移动端用户信息区 */
 .mobile-user-section {
   padding: 20px;
   display: flex;
@@ -764,6 +660,7 @@ const getTooltip = (dot) => {
   border-bottom: 1px solid #e6e6e6;
 }
 
+/* 移动端用户信息区的语言切换 */
 .mobile-user-section .p {
   color: #000000 !important;
   font-family: "Source Han Sans CN-Medium", Helvetica;
@@ -774,15 +671,18 @@ const getTooltip = (dot) => {
   opacity: 1 !important;
 }
 
+/* 移动端用户信息区的"中" */
 .mobile-user-section .span {
   color: #000000 !important;
 }
 
+/* 移动端用户信息区的"/英" */
 .mobile-user-section .text-wrapper-7 {
   color: #939393 !important;
   font-size: 12px !important;
 }
 
+/* 移动端用户信息区的容器 */
 .mobile-user-section .frame {
   align-items: center;
   display: flex;
@@ -790,18 +690,21 @@ const getTooltip = (dot) => {
   gap: 12px;
 }
 
+/* 移动端用户信息区的用户信息 */
 .mobile-user-section .div {
   align-items: center;
   display: inline-flex;
   gap: 12px;
 }
 
+/* 移动端用户信息区的头像 */
 .mobile-user-section .ps {
   height: 32px;
   object-fit: cover;
   width: 32px;
 }
 
+/* 移动端用户信息区的用户名 */
 .mobile-user-section .text-wrapper {
   color: #000000;
   font-family: "Source Han Sans CN-Medium", Helvetica;
@@ -809,6 +712,7 @@ const getTooltip = (dot) => {
   font-weight: 500;
 }
 
+/* 移动端用户信息区的小问号 */
 .mobile-user-section .element-BE {
   aspect-ratio: 1;
   height: 24px;
@@ -816,10 +720,12 @@ const getTooltip = (dot) => {
   width: 24px;
 }
 
+/* 移动端用户信息区的分隔线 */
 .mobile-user-section .vector {
   display: none;
 }
 
+/* 移动端导航 */
 .mobile-nav {
   padding: 20px;
   display: flex;
@@ -827,6 +733,7 @@ const getTooltip = (dot) => {
   gap: 10px;
 }
 
+/* 移动端导航项 */
 .nav-item {
   padding: 12px 20px;
   border-radius: 8px;
@@ -835,14 +742,17 @@ const getTooltip = (dot) => {
   transition: background 0.2s;
 }
 
+/* 移动端导航项悬停 */
 .nav-item:hover {
   background: #f0f0f0;
 }
 
+/* 移动端导航项激活 */
 .nav-item.active {
   background: #e6e6e6;
 }
 
+/* 响应式：宽度 <= 1100px */
 @media (max-width: 1100px) {
   .desktop .text-wrapper-6 {
     font-size: 34px;
@@ -861,6 +771,8 @@ const getTooltip = (dot) => {
   .desktop .frame-3,
   .desktop .div-wrapper {
     padding: 6px 12px;
+    width: 90px;
+    min-width: 90px;
   }
 
   .desktop .text-wrapper-3,
@@ -889,12 +801,14 @@ const getTooltip = (dot) => {
   }
 }
 
+/* 响应式：宽度 <= 1023px */
 @media (max-width: 1023px) {
   .desktop .text-wrapper {
     display: none;
   }
 }
 
+/* 响应式：宽度 <= 960px */
 @media (max-width: 960px) {
   .header-container {
     padding: 0 15px;
@@ -927,15 +841,19 @@ const getTooltip = (dot) => {
   .desktop .frame-3,
   .desktop .div-wrapper {
     padding: 5px 10px;
+    width: 80px;
+    min-width: 80px;
   }
 }
 
+/* 响应式：宽度 <= 899px */
 @media (max-width: 899px) {
   .header-center {
     display: none;
   }
 }
 
+/* 响应式：宽度 <= 880px */
 @media (max-width: 880px) {
   .header-center {
     padding: 0 10px;
@@ -950,6 +868,7 @@ const getTooltip = (dot) => {
   }
 }
 
+/* 响应式：宽度 <= 768px（移动端） */
 @media (max-width: 768px) {
   .header-container {
     height: 70px;
@@ -983,9 +902,11 @@ const getTooltip = (dot) => {
   }
 }
 
+/* 响应式：宽度 <= 576px */
 @media (max-width: 576px) {
   .header-container {
     padding: 0 10px;
+    width: 100%;
   }
 
   .desktop .mask-group {
@@ -1001,9 +922,11 @@ const getTooltip = (dot) => {
   }
 }
 
+/* 响应式：宽度 >= 1920px（大屏） */
 @media (min-width: 1920px) {
   .header-container {
     padding: 0 40px;
+    width: 100%;
   }
 
   .desktop .text-wrapper-6 {
