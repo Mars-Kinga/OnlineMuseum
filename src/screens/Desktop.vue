@@ -1,37 +1,42 @@
 <template>
-  <!-- 页面主容器：整张画布（1024x1440），所有元素的定位参照 -->
+  <!-- 页面主容器：全屏自适应，不滚动 -->
   <div class="desktop" data-model-id="45:2">
-    <!-- 背景装饰SVG（aigei-com-2.svg）：超大幅铺底的装饰图形 -->
-    <img class="aigei-com" alt="Aigei com" src="/img/aigei-com-2.svg" />
-    <!-- 主背景图层（aigei-com-1.svg）：铺满画布的底图 -->
-    <img class="img" alt="Aigei com" src="/img/aigei-com-1.svg" />
-    <!-- 地图国家圆点：五个国家中心的小蓝点，可悬停和点击 -->
-    <div class="map-dots">
-      <button
-        v-for="dot in mapDots"
-        :key="dot.id"
-        class="map-dot"
-        :style="{ left: dot.left, top: dot.top }"
-        :aria-label="dot.name"
-        @click.stop="toggleDot(dot)"
-        @mouseenter="hoveredDot = dot"
-        @mouseleave="hoveredDot = null"
-      ></button>
-      <!-- 国家简介预览框 -->
-      <div
-        v-if="activeDot || hoveredDot"
-        class="tooltip tooltip--right"
-        :style="{
-          left: (activeDot || hoveredDot).left,
-          top: (activeDot || hoveredDot).top,
-        }"
-      >
-        <h3 class="tooltip-title">
-          {{ getTooltip(activeDot || hoveredDot).title }}
-        </h3>
-        <p class="tooltip-text">
-          {{ getTooltip(activeDot || hoveredDot).content }}
-        </p>
+    <!-- 地图滚动区域 -->
+    <div class="scroll-container">
+      <div class="map-wrapper">
+        <!-- 背景装饰SVG（aigei-com-2.svg）：超大幅铺底的装饰图形 -->
+        <img class="aigei-com" alt="Aigei com" src="/img/aigei-com-2.svg" />
+        <!-- 主背景图层（aigei-com-1.svg）：铺满画布的底图 -->
+        <img class="img" alt="Aigei com" src="/img/aigei-com-1.svg" />
+        <!-- 地图国家圆点：五个国家中心的小蓝点，可悬停和点击 -->
+        <div class="map-dots">
+          <button
+            v-for="dot in mapDots"
+            :key="dot.id"
+            class="map-dot"
+            :style="{ left: dot.left, top: dot.top }"
+            :aria-label="dot.name"
+            @click.stop="toggleDot(dot)"
+            @mouseenter="hoveredDot = dot"
+            @mouseleave="hoveredDot = null"
+          ></button>
+          <!-- 国家简介预览框 -->
+          <div
+            v-if="activeDot || hoveredDot"
+            class="tooltip tooltip--right"
+            :style="{
+              left: (activeDot || hoveredDot).left,
+              top: (activeDot || hoveredDot).top,
+            }"
+          >
+            <h3 class="tooltip-title">
+              {{ getTooltip(activeDot || hoveredDot).title }}
+            </h3>
+            <p class="tooltip-text">
+              {{ getTooltip(activeDot || hoveredDot).content }}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -259,34 +264,50 @@ const getTooltip = (dot) => {
 /* 页面主容器 */
 .desktop {
   background-color: #e1e1e1;
-  min-height: 1024px;
-  min-width: 1440px;
-  position: relative;
+  height: 100vh;
   width: 100%;
-  padding-top: 120px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 新增滚动容器 */
+.scroll-container {
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
+}
+
+/* 新增地图包裹容器 */
+.map-wrapper {
+  position: relative;
+  width: max(100vw, calc(100vh * 1440 / 1024));
+  height: max(100vh, calc(100vw * 1024 / 1440));
+  margin: 0 auto;
 }
 
 /* 背景装饰SVG（大铺底） */
-.desktop .aigei-com {
+.map-wrapper .aigei-com {
   height: 100%;
   left: 0;
   right: 0;
   position: absolute;
   top: 0;
   width: 100%;
+  object-fit: cover;
 }
 
 /* 主背景图层 */
-.desktop .img {
+.map-wrapper .img {
   height: 100%;
   left: 0;
   position: absolute;
   top: 0;
   width: 100%;
+  object-fit: cover;
 }
 
 /* 地图国家圆点层：充满画布，允许点击 */
-.desktop .map-dots {
+.map-wrapper .map-dots {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -296,13 +317,20 @@ const getTooltip = (dot) => {
 /* 单个蓝色圆点（默认 12px，可按需改） */
 .desktop .map-dot {
   position: absolute;
-  width: 12px;
-  height: 15px;
+  /* 统一为正圆形，大小相对于视口宽度（vw）进行微小缩放，并保证最小 14px 最大 22px 的合理点击范围 */
+  width: clamp(14px, 1.2vw, 22px);
+  /* 在 absolute 定位且没有指定 box-sizing 的情况下，最好显式指定 aspect-ratio 来保持绝对正圆 */
+  aspect-ratio: 1 / 1;
+  height: auto;
+  
   border-radius: 50%;
   background: #185592;
   border: 2px solid #ffffff;
   box-shadow: 0 0 0 2px rgba(19, 70, 121, 0.3);
   pointer-events: auto;
+  
+  /* 将定位点移动到圆心，确保放大缩小时圆点始终对准坐标中心 */
+  transform: translate(-50%, -50%);
 }
 
 /* 顶部白色导航条背景 */
@@ -561,10 +589,18 @@ const getTooltip = (dot) => {
   z-index: 1;
 }
 
+/* 对于 map-dot，因为前面加了 translate(-50%, -50%) 居中，hover时需要保留该变换 */
+.desktop .map-dot:hover {
+  transform: translate(-50%, -50%) scale(1.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  z-index: 10;
+}
+
 /* 导航项悬停放大效果 */
 .desktop .frame-3:hover,
-.desktop .div-wrapper:hover,
-.desktop .map-dot:hover {
+.desktop .div-wrapper:hover {
   transform: scale(1.06);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -896,10 +932,6 @@ const getTooltip = (dot) => {
     height: 28px;
     width: 28px;
   }
-
-  .desktop {
-    padding-top: 90px;
-  }
 }
 
 /* 响应式：宽度 <= 576px */
@@ -915,10 +947,6 @@ const getTooltip = (dot) => {
 
   .desktop .text-wrapper-6 {
     font-size: 26px;
-  }
-
-  .desktop {
-    padding-top: 80px;
   }
 }
 
