@@ -151,6 +151,10 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
+import { useRouter } from "vue-router";
+
+// 路由实例
+const router = useRouter();
 
 // 汉堡菜单开关状态
 const isMenuOpen = ref(false);
@@ -231,8 +235,15 @@ const mapDots = ref([
   },
 ]);
 
-// 切换地图圆点的激活状态
+// 切换地图圆点的激活状态与页面跳转
 const toggleDot = (dot) => {
+  // 如果点击的是乌兹别克斯坦，则跳转到国家页面
+  if (dot.id === 'uz') {
+    router.push({ name: 'Uzbekistan' });
+    return;
+  }
+
+  // 对于其他国家，仅切换信息框显示
   if (activeDot.value?.id === dot.id) {
     activeDot.value = null;
   } else {
