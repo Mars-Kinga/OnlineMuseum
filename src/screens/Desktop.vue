@@ -212,7 +212,7 @@ const mapDots = ref([
   {
     id: "tj",
     name: "塔吉克斯坦",
-    left: "29.72%", // 基于 path BBox 几何中心
+    left: "26.50%", // 视觉向西微调（原几何中心29.72%偏东）
     top: "55.45%",
     title: "塔吉克斯坦",
     content: `塔吉克斯坦
@@ -222,7 +222,7 @@ const mapDots = ref([
   {
     id: "kg",
     name: "吉尔吉斯斯坦",
-    left: "33.28%", // 基于 path BBox 几何中心
+    left: "29.50%", // 视觉向西微调（原几何中心33.28%偏东）
     top: "50.75%",
     title: "吉尔吉斯斯坦",
     content: `吉尔吉斯斯坦
