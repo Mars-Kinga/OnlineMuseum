@@ -2,7 +2,7 @@
 <html lang="cn">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=eryaxindahei:wght@400&display=swap" />
@@ -28,22 +28,28 @@
       <div class="img-2"></div>
       <!-- 右侧信息面板，展示城市介绍及相关信息 -->
       <div class="box-2">
-        <div class="section">
-          <div class="section-2">
-            <span class="text-3"
-              style="font-family: Source Han Sans CN, var(--default-font-family);"
-              >点击按钮查看更多～</span
-            >
-          </div>
-          <img class="content-img" src="" style="margin-top: 20px;" />
-          <!-- 各个信息块，分别展示简介、历史和遗迹 -->
-          <div class="box-3" style="top: 50px; transition: all 0.3s ease;"><span class="text-4" style="position: relative; text-align: center;">历史背景</span></div>
-          <div class="box-3" style="top: 170px; transition: all 0.3s ease;"><span class="text-4" style="position: relative; text-align: center;">主要遗迹</span></div>
-          <div class="box-3" style="top: 290px; transition: all 0.3s ease;"><span class="text-4" style="position: relative; text-align: center;">文化遗产</span></div>
-          <div class="box-3" style="top: 410px; transition: all 0.3s ease;"><span class="text-4" style="position: relative; text-align: center;">联合考古</span></div>
-        </div>
         <div class="pic-3"></div>
       </div>
+      
+      <div class="section">
+        <!-- 移动端可以加一个关闭按钮或者靠点击地图其他区域关闭 -->
+        <div class="section-close-btn" style="display: none;">×</div>
+        
+        <div class="section-tabs">
+          <div class="box-3"><span class="text-4">历史背景</span></div>
+          <div class="box-3"><span class="text-4">主要遗迹</span></div>
+          <div class="box-3"><span class="text-4">文化遗产</span></div>
+          <div class="box-3"><span class="text-4">联合考古</span></div>
+        </div>
+        
+        <div class="section-content-wrapper">
+          <div class="section-2">
+            <span class="text-3">点击按钮查看更多～</span>
+          </div>
+          <img class="content-img" src="" style="display: none;" />
+        </div>
+      </div>
+
       <!-- 地理、历史、建筑、服饰、宗教信息展示区域 -->
       <div class="section-4">
         <div class="section-tip">

@@ -46,36 +46,48 @@ document.addEventListener("DOMContentLoaded", function () {
     { top: 380, left: 680, text: "首都：塔什干" }
   ];
 
+  // 原始地图容器的宽高基准 (基于 .pic-3)
+  const mapBaseWidth = 880;
+  const mapBaseHeight = 472.915; 
+  // 原始地图相对于父容器的偏移量
+  const mapOffsetX = 90;
+  const mapOffsetY = 150;
+
   dotsData.forEach((pos) => {
     const dot = document.createElement("div");
+    dot.className = "map-dot";
     dot.style.position = "absolute";
-    dot.style.width = "14px";
-    dot.style.height = "14px";
     dot.style.borderRadius = "50%";
     dot.style.background = "#804430";
     if (pos.text === "首都：塔什干") {
       dot.style.background = "#ffd700"; // 初始设为黄色
     }
-    dot.style.top = `${pos.top}px`;
-    dot.style.left = `${pos.left}px`;
+    
+    // 使用计算后的百分比定位以支持响应式，需减去原始偏移量以匹配相对于 .pic-3 的位置
+    const relativeTop = pos.top - mapOffsetY;
+    const relativeLeft = pos.left - mapOffsetX;
+    dot.style.top = `${(relativeTop / mapBaseHeight) * 100}%`;
+    dot.style.left = `${(relativeLeft / mapBaseWidth) * 100}%`;
     dot.style.cursor = "pointer";
     dot.style.zIndex = "45";
     dot.style.boxShadow = "0px 0px 8px rgba(0,0,0,0.2)";
     dot.style.transition = "transform 0.3s ease";
 
     // 提示框行为
-    // 创建提示框并设置其样式和显示逻辑
     const tooltip = document.createElement("div");
     tooltip.textContent = pos.text;
     tooltip.style.position = "absolute";
-    tooltip.style.top = `${pos.top - 50}px`;
-    tooltip.style.left = `${pos.left - 35}px`;
+    // 相对于原点定位
+    tooltip.style.top = "-40px";
+    tooltip.style.left = "50%";
+    tooltip.style.transform = "translateX(-50%)";
     tooltip.style.background = "#ffffff";
     tooltip.style.padding = "6px 10px";
     tooltip.style.boxShadow = "0px 0px 10px rgba(0,0,0,0.2)";
     tooltip.style.borderRadius = "6px";
     tooltip.style.display = "none";
     tooltip.style.zIndex = "100";
+    tooltip.style.whiteSpace = "nowrap";
 
     dot.addEventListener("mouseover", () => {
       dot.style.background = "#caa08c";
@@ -88,14 +100,20 @@ document.addEventListener("DOMContentLoaded", function () {
       tooltip.style.display = "none";
     });
     dot.addEventListener("click", () => {
-      // 右侧面板显示隐藏逻辑
-      // 切换右侧信息面板的可见性
       detailPanel.classList.toggle("visible");
     });
 
-    map.parentElement.appendChild(dot);
-    map.parentElement.appendChild(tooltip);
+    dot.appendChild(tooltip);
+    map.appendChild(dot);
   });
+
+  // 处理关闭按钮
+  const closeBtn = document.querySelector(".section-close-btn");
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      detailPanel.classList.remove("visible");
+    });
+  }
 
   // 中间按钮设置
   const xiwaText = `希瓦古城位于乌兹别克斯坦西南部的花剌子模州，始建于公元10世纪，是古丝绸之路上重要的商贸与文化枢纽。作为花剌子模帝国的核心城市，希瓦曾是中亚伊斯兰文明的璀璨明珠，被誉为“沙漠中的博物馆”。1990年，希瓦古城内城（伊钦·卡拉）被联合国教科文组织列为世界文化遗产。`;
