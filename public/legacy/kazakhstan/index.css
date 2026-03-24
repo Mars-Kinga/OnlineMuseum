@@ -127,7 +127,7 @@ input, select, textarea, button {
   width: 100%;
   max-width: 880px;
   aspect-ratio: 880 / 473; 
-  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/V7nr5BkNBg.png) no-repeat center / contain;
+  background: url(images/map.png) no-repeat center / contain;
   z-index: 45;
   margin: 0 auto;
 }
@@ -196,7 +196,7 @@ input, select, textarea, button {
 .box-3 {
   position: absolute;
   left: 0;
-  width: 120px;
+  width: 130px;
   height: 60px;
   background: #804430;
   display: flex;
@@ -211,9 +211,10 @@ input, select, textarea, button {
 
 /* 恢复原有的绝对定位top值 */
 .box-3:nth-child(1) { top: 50px; }
-.box-3:nth-child(2) { top: 170px; }
-.box-3:nth-child(3) { top: 290px; }
-.box-3:nth-child(4) { top: 410px; }
+.box-3:nth-child(2) { top: 150px; }
+.box-3:nth-child(3) { top: 250px; }
+.box-3:nth-child(4) { top: 350px; }
+.box-3:nth-child(5) { top: 450px; }
 
 .box-3:hover {
   background-color: #caa08c;
@@ -223,7 +224,7 @@ input, select, textarea, button {
 .text-4 {
   color: #ffffff;
   font-family: 'Ma Shan Zheng', Source Han Sans CN, var(--default-font-family);
-  font-size: 20px;
+  font-size: 16px;
   z-index: 51;
 }
 
@@ -234,7 +235,7 @@ input, select, textarea, button {
   height: 100%;
   display: flex;
   flex-direction: column;
-  margin-left: 130px; /* 为左侧绝对定位的box-3留出空间 */
+  margin-left: 140px; /* 为左侧绝对定位的box-3留出空间 */
 }
 
 .section-2 {
@@ -258,7 +259,7 @@ input, select, textarea, button {
 
 .content-img {
   width: 100%;
-  max-width: 200px;
+  max-width: 100%;
   height: auto;
   margin-top: 20px;
   border-radius: 16px;
@@ -329,7 +330,7 @@ input, select, textarea, button {
   transform: scale(1.05);
 }
 
-.geography, .history, .building, .clothing, .religion {
+.geography, .history, .industry, .ethnicity, .funfact {
   position: absolute;
   bottom: 0; left: 0; right: 0;
   height: 70%;
@@ -341,7 +342,7 @@ input, select, textarea, button {
   transition: all 0.3s ease;
 }
 
-.geography:hover, .history:hover, .building:hover, .clothing:hover, .religion:hover {
+.geography:hover, .history:hover, .industry:hover, .ethnicity:hover, .funfact:hover {
   background: transparent;
 }
 

@@ -244,6 +244,12 @@ const toggleDot = (dot) => {
     router.push({ name: "Uzbekistan" });
     return;
   }
+  
+  // 如果点击的是哈萨克斯坦，则跳转到国家页面
+  if (dot.id === "kz") {
+    router.push({ name: "Kazakhstan" });
+    return;
+  }
 
   // 对于其他国家，仅切换信息框显示
   if (activeDot.value?.id === dot.id) {
@@ -343,7 +349,7 @@ const getTooltip = (dot) => {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 5;
+  z-index: 105;
 }
 
 /* 单个蓝色圆点（默认 12px，可按需改） */

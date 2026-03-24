@@ -107,13 +107,38 @@ document.addEventListener("DOMContentLoaded", function () {
     map.appendChild(dot);
   });
 
-  // 处理关闭按钮
+  // 处理关闭逻辑
+  const closeDetailPanel = () => {
+    detailPanel.classList.remove("visible");
+  };
+
+  // 1. 关闭按钮点击
   const closeBtn = document.querySelector(".section-close-btn");
   if (closeBtn) {
-    closeBtn.addEventListener("click", () => {
-      detailPanel.classList.remove("visible");
+    closeBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      closeDetailPanel();
     });
   }
+
+  // 2. 点击外部区域关闭
+  document.addEventListener("click", (e) => {
+    // 如果详情面板是可见的，并且点击的目标既不是面板本身，也不是面板的子元素，
+    // 并且点击的目标也不是地图上的圆点（防止刚打开就关闭）
+    const isClickInsidePanel = detailPanel.contains(e.target);
+    const isClickOnDot = e.target.classList.contains("map-dot") || e.target.closest(".map-dot");
+    
+    if (detailPanel.classList.contains("visible") && !isClickInsidePanel && !isClickOnDot) {
+      closeDetailPanel();
+    }
+  });
+
+  // 3. Esc 键关闭
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeDetailPanel();
+    }
+  });
 
   // 中间按钮设置
   const xiwaText = `希瓦古城位于乌兹别克斯坦西南部的花剌子模州，始建于公元10世纪，是古丝绸之路上重要的商贸与文化枢纽。作为花剌子模帝国的核心城市，希瓦曾是中亚伊斯兰文明的璀璨明珠，被誉为“沙漠中的博物馆”。1990年，希瓦古城内城（伊钦·卡拉）被联合国教科文组织列为世界文化遗产。`;
