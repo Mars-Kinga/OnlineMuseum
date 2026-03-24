@@ -8,6 +8,8 @@
         <img class="aigei-com" alt="Aigei com" src="/img/aigei-com-2.svg" />
         <!-- 主背景图层（aigei-com-1.svg）：铺满画布的底图 -->
         <img class="img" alt="Aigei com" src="/img/aigei-com-1.svg" />
+        <!-- 红色折线图层 -->
+        <img class="red-polyline" alt="Red polyline" src="/img/red-polyline.svg" />
         <!-- 地图国家圆点：五个国家中心的小蓝点，可悬停和点击 -->
         <div class="map-dots">
           <button
@@ -309,6 +311,7 @@ const getTooltip = (dot) => {
   top: 0;
   width: 100%;
   object-fit: cover;
+  opacity: 0.3;
 }
 
 /* 主背景图层 */
@@ -319,7 +322,20 @@ const getTooltip = (dot) => {
   top: 0;
   width: 100%;
   object-fit: cover;
-  opacity: 0.7;
+  opacity: 0.3;
+}
+
+/* 红色折线图层 */
+.map-wrapper .red-polyline {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  object-fit: cover;
+  z-index: 100;
+  pointer-events: none;
+  filter: drop-shadow(0 0 2px rgba(255, 0, 0, 0.8));
 }
 
 /* 地图国家圆点层：充满画布，允许点击 */
@@ -351,7 +367,7 @@ const getTooltip = (dot) => {
 
 /* 顶部白色导航条背景 */
 .header-container {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.8);
   background-image: url("~@/assets/古书纸2.jpg.png");
   background-size: cover;
   background-position: center;

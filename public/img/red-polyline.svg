@@ -1,0 +1,24 @@
+<svg width="1440" height="1024" viewBox="0 0 1440 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M382.5 537C382.5 537 395 508 431.5 490C468 472 505.5 478 505.5 478C570.355 437.389 604.454 438.121 661.5 478C743.26 468.208 782.476 482.673 837.5 553.5C887.638 556.932 908.825 569.221 927 620.5C971.296 607.339 990.291 612.96 1016.5 640" stroke="#FF6B6B" stroke-width="6" stroke-linecap="round" filter="url(#glow)"/>
+<circle cx="384.5" cy="535.5" r="7" fill="#FF6B6B" filter="url(#glow)"/>
+<circle cx="384" cy="535" r="10" stroke="#FF6B6B" stroke-width="4" fill="none" filter="url(#glow)"/>
+<circle cx="507.5" cy="477.5" r="7" fill="#FF6B6B" filter="url(#glow)"/>
+<circle cx="507" cy="477" r="10" stroke="#FF6B6B" stroke-width="4" fill="none" filter="url(#glow)"/>
+<circle cx="662.5" cy="477.5" r="7" fill="#FF6B6B" filter="url(#glow)"/>
+<circle cx="662" cy="477" r="10" stroke="#FF6B6B" stroke-width="4" fill="none" filter="url(#glow)"/>
+<circle cx="837.5" cy="553.5" r="7" fill="#FF6B6B" filter="url(#glow)"/>
+<circle cx="837" cy="553" r="10" stroke="#FF6B6B" stroke-width="4" fill="none" filter="url(#glow)"/>
+<circle cx="928.5" cy="620.5" r="7" fill="#FF6B6B" filter="url(#glow)"/>
+<circle cx="928" cy="620" r="10" stroke="#FF6B6B" stroke-width="4" fill="none" filter="url(#glow)"/>
+<circle cx="1017.5" cy="640.5" r="7" fill="#FF6B6B" filter="url(#glow)"/>
+<circle cx="1017" cy="640" r="10" stroke="#FF6B6B" stroke-width="4" fill="none" filter="url(#glow)"/>
+<defs>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+    <feMerge>
+      <feMergeNode in="coloredBlur"/>
+      <feMergeNode in="SourceGraphic"/>
+    </feMerge>
+  </filter>
+</defs>
+</svg>
