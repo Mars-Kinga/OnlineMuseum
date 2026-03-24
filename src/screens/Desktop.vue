@@ -238,8 +238,8 @@ const mapDots = ref([
 // 切换地图圆点的激活状态与页面跳转
 const toggleDot = (dot) => {
   // 如果点击的是乌兹别克斯坦，则跳转到国家页面
-  if (dot.id === 'uz') {
-    router.push({ name: 'Uzbekistan' });
+  if (dot.id === "uz") {
+    router.push({ name: "Uzbekistan" });
     return;
   }
 
@@ -294,6 +294,10 @@ const getTooltip = (dot) => {
   width: max(100vw, calc(100vh * 1440 / 1024));
   height: max(100vh, calc(100vw * 1024 / 1440));
   margin: 0 auto;
+  background-image: url("~@/assets/古书纸3.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* 背景装饰SVG（大铺底） */
@@ -315,6 +319,7 @@ const getTooltip = (dot) => {
   top: 0;
   width: 100%;
   object-fit: cover;
+  opacity: 0.7;
 }
 
 /* 地图国家圆点层：充满画布，允许点击 */
@@ -333,20 +338,25 @@ const getTooltip = (dot) => {
   /* 在 absolute 定位且没有指定 box-sizing 的情况下，最好显式指定 aspect-ratio 来保持绝对正圆 */
   aspect-ratio: 1 / 1;
   height: auto;
-  
+
   border-radius: 50%;
   background: #185592;
   border: 2px solid #ffffff;
   box-shadow: 0 0 0 2px rgba(19, 70, 121, 0.3);
   pointer-events: auto;
-  
+
   /* 将定位点移动到圆心，确保放大缩小时圆点始终对准坐标中心 */
   transform: translate(-50%, -50%);
 }
 
 /* 顶部白色导航条背景 */
 .header-container {
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.5);
+  background-image: url("~@/assets/古书纸2.jpg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-blend-mode: overlay;
   height: 90px;
   position: fixed;
   top: 0;
