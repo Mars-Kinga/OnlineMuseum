@@ -44,11 +44,11 @@ document.addEventListener("DOMContentLoaded", function () {
   // 萨乌兰遗址: South ~50% X, ~62% Y
 
   const dotsData = [
-    { topPercent: 35, leftPercent: 75, text: "塔姆加里岩画" },
-    { topPercent: 60, leftPercent: 55, text: "亚萨维陵墓" },
-    { topPercent: 65, leftPercent: 45, text: "奥特拉尔古城" },
-    { topPercent: 70, leftPercent: 65, text: "塔拉兹" },
-    { topPercent: 62, leftPercent: 50, text: "萨乌兰遗址" }
+    { topPercent: 78, leftPercent: 72, text: "塔姆加里岩画" },
+    { topPercent: 83, leftPercent: 53, text: "亚萨维陵墓" },
+    { topPercent: 80, leftPercent: 70, text: "奥特拉尔古城" },
+    { topPercent: 82, leftPercent: 60, text: "塔拉兹" },
+    { topPercent: 80, leftPercent: 52, text: "萨乌兰遗址" }
   ];
 
   dotsData.forEach((pos, index) => {

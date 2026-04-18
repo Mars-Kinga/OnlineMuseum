@@ -51,6 +51,7 @@ input, select, textarea, button {
   font-size: clamp(24px, 4vw, 45px);
   font-weight: 450;
   white-space: nowrap;
+  margin-left: 40px;
   z-index: 3;
 }
 

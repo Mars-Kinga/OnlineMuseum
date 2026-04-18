@@ -64,7 +64,7 @@
               <div class="text-wrapper-2">首页</div>
             </div>
             <!-- 导航项：未激活状态（灰边框）-> 包含 3D展厅 / 文化对比 / 时空之旅 / 每日瑰宝 / 互动区 -->
-            <div class="frame-3">
+            <div class="frame-3" @click="router.push({ name: 'Exhibition3D' })">
               <div class="text-wrapper-3">3D展厅</div>
             </div>
             <div class="frame-3">
@@ -141,7 +141,7 @@
       <!-- 移动端导航 -->
       <div class="mobile-nav">
         <div class="nav-item active">首页</div>
-        <div class="nav-item">3D展厅</div>
+        <div class="nav-item" @click="router.push({ name: 'Exhibition3D' })">3D展厅</div>
         <div class="nav-item">文化对比</div>
         <div class="nav-item">时空之旅</div>
         <div class="nav-item">每日瑰宝</div>

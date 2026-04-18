@@ -1,0 +1,305 @@
+:root {
+  --default-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei", "Source Han Sans CN", sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hall-page,
+.hall-page * {
+  box-sizing: border-box;
+}
+
+.hall-page {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: #6f3a2a;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.hall-bg {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/cKjeepi8Ev.png) no-repeat center / cover;
+  opacity: 0.4;
+  filter: blur(4px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.museum-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 5%;
+  background: #ffffff;
+  z-index: 100;
+  border-radius: 0 0 52px 52px;
+  box-shadow: 4px 12px 9px 0 rgba(50, 23, 6, 0.4);
+  min-height: 80px;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.nav-back-btn {
+  padding: 10px 16px;
+  background: #b6adad;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: Source Han Sans CN, var(--default-font-family);
+  font-size: 14px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.nav-back-btn:hover {
+  background: #8b7f7f;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1;
+  min-width: 0;
+}
+
+.nav-link {
+  color: #000000;
+  font-family: 'Ma Shan Zheng', Source Han Sans CN, var(--default-font-family);
+  font-size: clamp(24px, 4vw, 45px);
+  font-weight: 450;
+  white-space: nowrap;
+  margin-left: 40px;
+}
+
+.hall-content {
+  position: relative;
+  width: 100%;
+  padding: 140px 20px 80px;
+  z-index: 2;
+}
+
+.model-stage {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 52px 52px 0 0;
+  box-shadow: 0 -12px 24px rgba(0, 0, 0, 0.15);
+  padding: 36px 28px 40px;
+}
+
+.top-toolbar {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 28px;
+}
+
+.viewer-hint {
+  margin-bottom: 20px;
+  color: rgba(255, 250, 245, 0.85);
+  font-family: Source Han Sans CN, var(--default-font-family);
+  font-size: 14px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+}
+
+.model-switcher {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.switch-btn {
+  min-width: 148px;
+  padding: 12px 24px;
+  border: 1px solid #f3dfc8;
+  background: rgba(255, 250, 245, 0.9);
+  color: #814531;
+  font-size: 16px;
+  font-family: Source Han Sans CN, var(--default-font-family);
+  cursor: pointer;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+}
+
+.switch-btn:hover,
+.switch-btn.is-active {
+  background: #caa08c;
+  color: #ffffff;
+  border-color: #caa08c;
+  transform: translateY(-1px);
+}
+
+.stage-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(300px, 0.72fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.viewer-wrap {
+  width: 100%;
+  min-height: 68vh;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 30px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(242, 242, 242, 0.95) 0%, rgba(233, 223, 212, 0.92) 100%);
+  box-shadow: 0 18px 40px rgba(76, 46, 33, 0.16);
+}
+
+.museum-viewer {
+  display: block;
+  width: 100%;
+  height: 68vh;
+  min-height: 620px;
+  background: transparent;
+  touch-action: pan-y;
+}
+
+.exhibit-intro {
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  border-radius: 32px;
+  padding: 30px;
+  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
+  align-self: stretch;
+  border: 1px solid rgba(128, 68, 48, 0.08);
+}
+
+.intro-title {
+  margin: 0 0 18px;
+  color: #000000;
+  font-family: 'Ma Shan Zheng', Source Han Sans CN, var(--default-font-family);
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 450;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(128, 68, 48, 0.12);
+}
+
+.intro-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.intro-card {
+  background: #f8f5f1;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: inset 0 0 0 1px rgba(128, 68, 48, 0.08);
+  min-height: 220px;
+}
+
+.intro-card-title {
+  margin: 0 0 12px;
+  color: #804430;
+  font-family: 'Ma Shan Zheng', Source Han Sans CN, var(--default-font-family);
+  font-size: 28px;
+  font-weight: 450;
+}
+
+.intro-card-text {
+  margin: 0;
+  color: #000000;
+  font-family: Source Han Sans CN, var(--default-font-family);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+@media screen and (max-width: 1024px) {
+  .stage-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .viewer-wrap {
+    min-height: 58vh;
+  }
+
+  .museum-viewer {
+    height: 58vh;
+    min-height: 460px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .museum-nav {
+    padding: 15px;
+    border-radius: 0 0 30px 30px;
+  }
+
+  .nav-link {
+    font-size: 24px;
+    text-align: left;
+    width: 100%;
+  }
+
+  .hall-content {
+    padding: 120px 12px 56px;
+  }
+
+  .model-stage {
+    padding: 24px 16px 28px;
+    border-radius: 30px 30px 0 0;
+  }
+
+  .top-toolbar {
+    margin-bottom: 20px;
+  }
+
+  .viewer-hint {
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+
+  .switch-btn {
+    width: 100%;
+  }
+
+  .viewer-wrap {
+    min-height: 52vh;
+    border-radius: 22px;
+  }
+
+  .museum-viewer {
+    height: 52vh;
+    min-height: 360px;
+  }
+
+  .exhibit-intro {
+    padding: 20px;
+    border-radius: 22px;
+  }
+
+  .intro-card {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .intro-card-title {
+    font-size: 24px;
+  }
+}
