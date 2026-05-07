@@ -69,27 +69,11 @@ input, select, textarea, button {
   z-index: 5;
 }
 
-.img {
-  width: 22px; height: 22px;
-  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/2tt6jVcQZX.png) no-repeat center / cover;
-}
-
 .text-2 {
   color: #000000;
   font-family: Source Han Sans CN, var(--default-font-family);
   font-size: 16px;
   font-weight: 500;
-}
-
-.pic {
-  width: 20px; height: 20px;
-  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/HFrPiKOevC.png) no-repeat center / cover;
-  cursor: pointer;
-}
-
-.pic-2 {
-  width: 100%; max-width: 150px; height: 1.2px;
-  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/VRgLcOxR7i.png) no-repeat center / cover;
 }
 
 /* === 页面模糊背景 === */
@@ -211,10 +195,15 @@ input, select, textarea, button {
 }
 
 /* 恢复原有的绝对定位top值 */
-.box-3:nth-child(1) { top: 50px; }
-.box-3:nth-child(2) { top: 170px; }
-.box-3:nth-child(3) { top: 290px; }
-.box-3:nth-child(4) { top: 410px; }
+.box-3:nth-child(1) { top: 30px; }
+.box-3:nth-child(2) { top: 100px; }
+.box-3:nth-child(3) { top: 170px; }
+.box-3:nth-child(4) { top: 240px; }
+.box-3:nth-child(5) { top: 310px; }
+.box-3:nth-child(6) { top: 380px; }
+.box-3:nth-child(7) { top: 450px; }
+.box-3:nth-child(8) { top: 520px; }
+
 
 .box-3:hover {
   background-color: #caa08c;
@@ -259,7 +248,7 @@ input, select, textarea, button {
 
 .content-img {
   width: 100%;
-  max-width: 200px;
+  max-width: 350px;
   height: auto;
   margin-top: 20px;
   border-radius: 16px;

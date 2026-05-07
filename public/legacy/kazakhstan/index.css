@@ -69,27 +69,11 @@ input, select, textarea, button {
   z-index: 5;
 }
 
-.img {
-  width: 22px; height: 22px;
-  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/2tt6jVcQZX.png) no-repeat center / cover;
-}
-
 .text-2 {
   color: #000000;
   font-family: Source Han Sans CN, var(--default-font-family);
   font-size: 16px;
   font-weight: 500;
-}
-
-.pic {
-  width: 20px; height: 20px;
-  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/HFrPiKOevC.png) no-repeat center / cover;
-  cursor: pointer;
-}
-
-.pic-2 {
-  width: 100%; max-width: 150px; height: 1.2px;
-  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/VRgLcOxR7i.png) no-repeat center / cover;
 }
 
 /* === 页面模糊背景 === */
@@ -302,6 +286,7 @@ input, select, textarea, button {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: stretch;
   gap: 20px;
   width: 100%;
   max-width: 1200px;
@@ -321,10 +306,10 @@ input, select, textarea, button {
   cursor: pointer;
 }
 
-.pic-4 { background-image: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/yTif46Rpoy.png); }
-.img-3 { background-image: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/TTqBvYDeiV.png); }
-.pic-7 { background-image: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/Tbp5ZLYcSO.png); }
-.mask-group { background-image: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/vuYAqFRrzS.png); }
+.pic-4 { background-image: url(images/geography.png); }
+.img-3 { background-image: url(images/history.png); }
+.pic-7 { background-image: url(images/resources.png); }
+.mask-group { background-image: url(images/race.png); }
 .mask-group-2 { background-image: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/F33i5EZNNJ.png); height: 429px; margin-top: 62px; }
 
 .pic-4:hover, .img-3:hover, .pic-7:hover, .mask-group:hover, .mask-group-2:hover {
@@ -370,23 +355,44 @@ input, select, textarea, button {
   flex: 1;
   min-width: 300px;
   max-width: 500px;
+  height: 491px;
   background: #ffffff;
   border-radius: 12px;
   padding: 30px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   box-shadow: 0px 12px 24px rgba(0,0,0,0.1);
-  margin-top: 62px; 
+  margin-top: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  align-self: stretch;
 }
 
 .text-c {
   color: #000000;
   font-family: Source Han Sans CN, var(--default-font-family);
   font-weight: 500;
-  line-height: 1.8;
+  line-height: 1.9;
   font-size: 15px;
   flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-align: left;
+  padding-right: 12px;
+  box-sizing: border-box;
+}
+
+.text-c::-webkit-scrollbar {
+  width: 8px;
+}
+
+.text-c::-webkit-scrollbar-thumb {
+  background: rgba(128, 68, 48, 0.22);
+  border-radius: 999px;
 }
 
 .section-7 {
@@ -579,6 +585,8 @@ input, select, textarea, button {
     grid-column: 1 / -1;
     margin-top: 20px;
     max-width: 100%;
+    height: auto;
+    min-height: 320px;
   }
 }
 

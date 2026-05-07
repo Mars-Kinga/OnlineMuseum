@@ -76,40 +76,14 @@
             <div class="frame-3">
               <div class="text-wrapper-5">每日瑰宝</div>
             </div>
-            <div class="frame-3">
+            <div class="frame-3" @click="goToPuzzle">
               <div class="text-wrapper-5">互动区</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 右上角用户信息区（头像/用户名/分隔线） -->
-      <div class="header-right">
-        <!-- 语言切换文案：中/英 -->
-        <div class="p">
-          <span class="span">中</span>
-          <span class="text-wrapper-7">/英</span>
-        </div>
-        <!-- 用户信息区容器 -->
-        <div class="frame">
-          <!-- 用户信息一行：左侧图标、用户名、右侧小问号 -->
-          <div class="div">
-            <!-- 用户头像/应用图标（ps-4.png）32x32 -->
-            <img class="ps" alt="Ps" src="/img/ps-4.png" />
-            <!-- 用户名文案：kitten123 -->
-            <div class="text-wrapper">kitten123</div>
-            <!-- 小问号/帮助提示图标（3x图 PNG） -->
-            <img
-              class="element-BE"
-              alt="Element BE"
-              src="/img/3-e5-9b-be-e6-a0-87-3x-1.png"
-            />
-          </div>
-          <!-- 细分隔线（vector-1.svg）位于用户信息区下方 -->
-          <img class="vector" alt="Vector" src="/img/vector-1.svg" />
-        </div>
-      </div>
-
+      
       <!-- 汉堡菜单按钮：移动端显示 -->
       <button class="hamburger-btn" @click="isMenuOpen = !isMenuOpen">
         <span class="hamburger-line"></span>
@@ -145,7 +119,7 @@
         <div class="nav-item">文化对比</div>
         <div class="nav-item">时空之旅</div>
         <div class="nav-item">每日瑰宝</div>
-        <div class="nav-item">互动区</div>
+        <div class="nav-item" @click="goToPuzzle">互动区</div>
       </div>
     </div>
   </div>
@@ -251,12 +225,27 @@ const toggleDot = (dot) => {
     return;
   }
 
+  if (dot.id === "kg") {
+    router.push({ name: "Kyrgyzstan" });
+    return;
+  }
+
+  if (dot.id === "tm") {
+    router.push({ name: "Turkmenistan" });
+    return;
+  }
+
   // 对于其他国家，仅切换信息框显示
   if (activeDot.value?.id === dot.id) {
     activeDot.value = null;
   } else {
     activeDot.value = dot;
   }
+};
+
+// 跳转到互动区拼图游戏
+const goToPuzzle = () => {
+  window.location.href = "/legacy/puzzle/index.html";
 };
 
 // 获取提示框的位置：根据圆点位置决定提示框显示方向
@@ -341,7 +330,7 @@ const getTooltip = (dot) => {
   object-fit: cover;
   z-index: 100;
   pointer-events: none;
-  filter: drop-shadow(0 0 2px rgba(255, 0, 0, 0.8));
+  filter: drop-shadow(0 0 2px rgba(219, 74, 74, 0.8));
 }
 
 /* 地图国家圆点层：充满画布，允许点击 */
