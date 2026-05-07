@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>古韵修复 - 自定义碎片版</title>
+    <style>
+        :root {
+            --gold: #d4af37;
+            --paper: #f4f1ea;
+            /* 根据你的图片实际尺寸修改下方数值 */
+            --tile-w: 128px;
+            --tile-h: 142px;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: "STSong", "SimSun", serif;
+            color: var(--paper);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            background: #1f1a17;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('./images/bg.jpg') no-repeat center center;
+            background-size: cover;
+            z-index: -2;
+            pointer-events: none;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.12);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .main-container {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 3px solid var(--gold);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px;
+            max-width: 95vw;
+            max-height: 90vh;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .back-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--gold);
+            color: #2c2c2c;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .back-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .reset-icon {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--gold);
+            color: #2c2c2c;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .reset-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .reset-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        h1 {
+            color: var(--gold);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        /* 游戏主容器 */
+        #game-container {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin: 10px 0;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* 左右碎片区域 */
+        .tiles-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: calc(var(--tile-w) * 0.7);
+        }
+
+        /* 中间目标区域 */
+        #game-board {
+            display: grid;
+            gap: 4px;
+            border: 8px solid #1a1a1a;
+            background: #1a1a1a;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.6s ease-in-out;
+        }
+
+        /* 单个拼图块容器 */
+        .tile-container {
+            width: var(--tile-w);
+            height: var(--tile-h);
+            overflow: hidden;
+            cursor: grab;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            box-sizing: border-box;
+            border: 3px solid #333;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* 左右两侧的拼图块 */
+        .tiles-container .tile-container {
+            width: calc(var(--tile-w) * 0.7);
+            height: calc(var(--tile-h) * 0.7);
+            border: 2px solid #444;
+        }
+
+        .tile-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5);
+            border-color: var(--gold);
+        }
+
+        .tile-container:active {
+            cursor: grabbing;
+        }
+
+        /* 框内的拼图块 */
+        .slot .tile-container {
+            cursor: pointer;
+            border: 3px solid var(--gold);
+        }
+
+        .slot .tile-container:hover {
+            border-color: #fff;
+        }
+
+        /* 拼图图片本身 */
+        .tile-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* 目标插槽 */
+        .slot {
+            width: var(--tile-w);
+            height: var(--tile-h);
+            border: 2px dashed #444;
+            background: rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slot.filled {
+            border: 2px solid var(--gold);
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        /* --- 胜利合成动画 --- */
+        #game-board.merged {
+            gap: 0;
+            border-color: var(--gold);
+            box-shadow: 0 0 40px var(--gold);
+            animation: finalShine 1s ease-in-out;
+        }
+
+        /* 合成时去掉图片边框 */
+        #game-board.merged .tile-container {
+            border-radius: 0 !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        #game-board.merged .slot {
+            border: none !important;
+            background: transparent !important;
+        }
+
+        @keyframes finalShine {
+            0% {
+                filter: brightness(1);
+            }
+
+            50% {
+                filter: brightness(1.5) contrast(1.1);
+            }
+
+            100% {
+                filter: brightness(1);
+            }
+        }
+
+        /* --- 弹窗样式 --- */
+        #modal-overlay {
+            display: none;
+            /* 初始隐藏 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .relic-info {
+            background: var(--paper);
+            color: #333;
+            width: 85%;
+            max-width: 400px;
+            padding: 30px;
+            border-radius: 4px;
+            border-top: 12px solid var(--gold);
+            text-align: center;
+            animation: modalSlideUp 0.5s ease;
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .relic-info h2 {
+            color: #8b0000;
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .intro-text {
+            line-height: 1.8;
+            text-align: left;
+            font-size: 16px;
+            margin: 20px 0;
+            border-top: 1px solid #ccc;
+            padding-top: 15px;
+        }
+
+        .intro-text p {
+            text-indent: 2em;
+        }
+
+        .close-btn {
+            padding: 10px 30px;
+            background: #8b0000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: "STSong", serif;
+        }
+
+        .close-btn:hover {
+            background: #a00000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-container">
+        <button id="reset-btn" class="reset-icon">
+            <svg t="1776821091094" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                p-id="4712" width="200" height="200">
+                <path
+                    d="M512 0C229.25 0 0 229.25 0 512s229.25 512 512 512 512-229.25 512-512S794.75 0 512 0zm0 960c-247.5 0-448-200.5-448-448s200.5-448 448-448 448 200.5 448 448-200.5 448-448 448z"
+                    fill="#2c2c2c" p-id="4713"></path>
+                <path
+                    d="M768 448a224 224 0 1 1-160-215.6V160h-32v72.4a288 288 0 1 0 192 0V160h-32v72.4A223.9 223.9 0 0 1 768 448z"
+                    fill="#2c2c2c" p-id="4714"></path>
+            </svg>
+        </button>
+        <button id="back-btn" class="back-icon">
+            <svg t="1776821091094" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                p-id="4712" width="200" height="200">
+                <path
+                    d="M947.4 864C893.2 697.7 736.2 578.9 551 575.5c-23.1-0.4-44.9 0.1-65.6 1.5v164.3c0.1 0.5 0.2 1 0.2 1.5 0 4-3.3 7.3-7.3 7.3-2.7 0-5-1.4-6.2-3.5v0.7L68.8 465.4h2.1c-4 0-7.3-3.3-7.3-7.3 0-2.9 1.7-5.4 4.1-6.6L472 169v0.7c1.3-2.1 3.6-3.5 6.2-3.5 4 0 7.3 3.3 7.3 7.3 0 0.5-0.1 1-0.2 1.5v159.4c18.5-0.9 37.9-1.2 58.3-0.8 230.1 3.9 416.7 196.9 416.7 427.1 0.1 35.5-4.5 70.2-12.9 103.3z m-462-704.4v0.2h-0.4l0.4-0.2z m0 596.9l-0.3-0.2h0.3v0.2z"
+                    fill="#ffffff" p-id="4713"></path>
+            </svg>
+        </button>
+        <h1 id="game-title">丝路文物拼图</h1>
+
+        <div id="game-container">
+            <!-- 右侧碎片区域 -->
+            <div class="tiles-container" id="right-tiles">
+            </div>
+
+            <!-- 中间目标区域 -->
+            <div id="game-board">
+            </div>
+
+            <!-- 左侧碎片区域 -->
+            <div class="tiles-container" id="left-tiles">
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-overlay">
+        <div class="relic-info">
+            <h2>巴尔巴尔石像</h2>
+            <div>Balbal</div>
+            <div class="intro-text">
+                <div><strong>文物编号：</strong>KB-8621</div>
+                <div><strong>产地：</strong>哈萨克斯坦</div>
+                <div><strong>时期：</strong>公元6—10世纪</div>
+                <div>
+                    <strong>描述：</strong>巴尔巴尔石像（Balbal）是分布在中亚草原地区的一类古代石刻人像，主要见于哈萨克斯坦及周边地区，起源可追溯至公元6—10世纪的突厥汗国时期。这些石人通常由石块雕刻而成，造型简洁而具有象征性，多呈站立姿态，面部特征略带抽象，有的手持器物（如杯或武器），体现出古代游牧民族的生活与信仰。
+                </div>
+                <p>作为草原文明的重要文化遗存，这些石人不仅反映了早期游牧民族的艺术风格，也见证了丝绸之路沿线不同文明之间的交流与融合。今天，它们广泛分布于哈萨克草原，成为研究中亚历史与文化的重要实物资料。</p>
+                <p>感谢您的杰出修复，使这件珍贵的草原文明遗产重现昔日风采！</p>
+            </div>
+            <button class="close-btn" onclick="location.reload()">再次修复</button>
+        </div>
+    </div>
+
+    <script>
+        // --- 配置 ---
+        // 从URL参数中获取id，默认为1
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id') || '1';
+
+        // 根据id设置不同的配置
+        let ROWS, COLS, TOTAL_TILES, IMG_EXT, TILE_W, TILE_H;
+        IMG_EXT = '.jpg'; // 图片后缀名
+        let IMG_PATH = `./images/${id}/lump/`;
+        console.log(typeof id);
+
+
+        switch (id) {
+            case '1':
+                ROWS = 4;
+                COLS = 3;
+                TOTAL_TILES = ROWS * COLS; // 12
+                TILE_W = 120; // 默认宽度
+                TILE_H = 131; // 默认高度
+                break;
+            case '3':
+                ROWS = 3;
+                COLS = 3;
+                TOTAL_TILES = ROWS * COLS;
+                TILE_W = 120; // 默认宽度
+                TILE_H = 120; // 默认高度
+                break;
+            case '4':
+                ROWS = 3;
+                COLS = 3;
+                TOTAL_TILES = ROWS * COLS; // 12
+                TILE_W = 150; // 默认宽度
+                TILE_H = 112.5; // 默认高度
+                break;
+            case '5':
+                ROWS = 2;
+                COLS = 6;
+                TOTAL_TILES = ROWS * COLS;
+                TILE_W = 80; // 3:5比例宽度
+                TILE_H = 125; // 3:5比例高度
+                break;
+            default:
+                ROWS = 4;
+                COLS = 3;
+                TOTAL_TILES = ROWS * COLS;
+                TILE_W = 120; // 默认宽度
+                TILE_H = 120; // 默认高度
+        }
+        console.log(ROWS, COLS);
+
+        // 设置CSS变量
+        document.documentElement.style.setProperty('--tile-w', `${TILE_W}px`);
+        document.documentElement.style.setProperty('--tile-h', `${TILE_H}px`);
+
+        // 拼图块状态数组，存储图片索引，初始为-1表示空
+        let tilesState = Array(TOTAL_TILES).fill(-1);
+
+        function addZero(num) {
+            // 转成字符串，长度不足 2 时，前面补 0
+            return num < 10 ? '0' + num : num;
+        }
+
+        // --- 初始化中间目标区域 ---
+        function initBoard() {
+            const board = document.getElementById('game-board');
+            board.innerHTML = ''; // 清空
+
+            // 动态设置网格布局
+            board.style.gridTemplateColumns = `repeat(${COLS}, var(--tile-w))`;
+            board.style.gridTemplateRows = `repeat(${ROWS}, var(--tile-h))`;
+
+            // 创建目标插槽
+            for (let i = 0; i < TOTAL_TILES; i++) {
+                const slot = document.createElement('div');
+                slot.classList.add('slot');
+                slot.dataset.index = i; // 存储插槽的正确索引
+                board.appendChild(slot);
+            }
+        }
+
+        // --- 初始化左右碎片区域 ---
+        function initTiles() {
+            const leftTiles = document.getElementById('left-tiles');
+            const rightTiles = document.getElementById('right-tiles');
+            leftTiles.innerHTML = '';
+            rightTiles.innerHTML = '';
+
+            // 创建完整的图片索引数组并打乱
+            const allTiles = [...Array(TOTAL_TILES).keys()];
+            const shuffledTiles = allTiles.sort(() => Math.random() - 0.5);
+
+            // 分配到左右两侧
+            const leftHalf = shuffledTiles.slice(0, TOTAL_TILES / 2);
+            const rightHalf = shuffledTiles.slice(TOTAL_TILES / 2);
+
+            // 创建左侧碎片
+            leftHalf.forEach(imageIndex => {
+                createTile(imageIndex, leftTiles);
+            });
+
+            // 创建右侧碎片
+            rightHalf.forEach(imageIndex => {
+                createTile(imageIndex, rightTiles);
+            });
+        }
+
+        // --- 创建拼图块 ---
+        function createTile(imageIndex, container) {
+            const tile = document.createElement('div');
+            tile.classList.add('tile-container');
+            tile.draggable = true;
+            tile.dataset.index = imageIndex;
+
+            // 创建图片元素
+            const img = document.createElement('img');
+            img.src = `${IMG_PATH}image_part_0${addZero(imageIndex + 1)}${IMG_EXT}`;
+            img.alt = `碎片 ${imageIndex}`;
+            tile.appendChild(img);
+
+            // 添加拖拽事件
+            tile.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', imageIndex);
+                e.dataTransfer.setData('text/html', container.id);
+                tile.style.opacity = '0.5';
+            });
+
+            tile.addEventListener('dragend', () => {
+                tile.style.opacity = '1';
+            });
+
+            container.appendChild(tile);
+        }
+
+        // --- 初始化拖拽目标 ---
+        function initDropTargets() {
+            const slots = document.querySelectorAll('.slot');
+            slots.forEach(slot => {
+                slot.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    slot.style.borderColor = 'var(--gold)';
+                });
+
+                slot.addEventListener('dragleave', () => {
+                    slot.style.borderColor = '#444';
+                });
+
+                slot.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move'; // 设置dropEffect为move
+                    slot.style.borderColor = '#444';
+
+                    const imageIndexStr = e.dataTransfer.getData('text/plain');
+                    const sourceType = e.dataTransfer.getData('text/source-type') || e.dataTransfer.getData('text/html');
+                    const sourceSlotIndexStr = e.dataTransfer.getData('text/source-index') || e.dataTransfer.getData('text/uri-list');
+                    const targetSlotIndex = parseInt(slot.dataset.index);
+
+                    // 检查数据是否有效
+                    if (!imageIndexStr || !sourceType) {
+                        return;
+                    }
+
+                    const imageIndex = parseInt(imageIndexStr);
+                    const sourceSlotIndex = sourceType === 'slot' ? parseInt(sourceSlotIndexStr) : -1;
+
+                    // 检查目标插槽是否已有拼图块
+                    const existingTile = slot.querySelector('.tile-container');
+                    let existingImageIndex = -1;
+
+                    if (existingTile) {
+                        existingImageIndex = parseInt(existingTile.dataset.index);
+                    }
+
+                    // 处理从左右两侧拖拽
+                    if (sourceType === 'left-tiles' || sourceType === 'right-tiles') {
+                        // 移除原碎片
+                        const container = document.getElementById(sourceType);
+                        const tiles = container.querySelectorAll('.tile-container');
+                        tiles.forEach(tile => {
+                            if (parseInt(tile.dataset.index) === imageIndex) {
+                                tile.remove();
+                            }
+                        });
+                    }
+                    // 处理从其他插槽拖拽
+                    else if (sourceType === 'slot' && sourceSlotIndex !== -1 && sourceSlotIndex !== targetSlotIndex) {
+                        // 从源插槽中移除
+                        const sourceSlot = document.querySelectorAll('.slot')[sourceSlotIndex];
+                        if (sourceSlot) {
+                            const sourceTile = sourceSlot.querySelector('.tile-container');
+                            if (sourceTile) {
+                                sourceSlot.removeChild(sourceTile);
+                                sourceSlot.classList.remove('filled');
+                                tilesState[sourceSlotIndex] = -1;
+                            }
+                        }
+                    }
+
+                    // 创建拼图块并添加到插槽
+                    const tile = document.createElement('div');
+                    tile.classList.add('tile-container');
+                    tile.dataset.index = imageIndex;
+
+                    const img = document.createElement('img');
+                    img.src = `${IMG_PATH}image_part_0${addZero(imageIndex + 1)}${IMG_EXT}`;
+                    img.alt = `碎片 ${imageIndex}`;
+                    tile.appendChild(img);
+
+                    // 移除点击事件，避免点击后拼图块消失
+                    // 如需还原功能，可以通过其他方式实现，例如添加一个专门的还原按钮
+
+                    // 添加拖拽功能，允许从框内拖拽到其他框
+                    tile.draggable = true;
+                    tile.addEventListener('dragstart', (e) => {
+                        e.dataTransfer.effectAllowed = 'move'; // 设置effectAllowed为move
+                        e.dataTransfer.setData('text/plain', imageIndex.toString());
+                        e.dataTransfer.setData('text/source-type', 'slot');
+                        e.dataTransfer.setData('text/source-index', targetSlotIndex.toString());
+                        tile.style.opacity = '0.5';
+                    });
+
+                    tile.addEventListener('dragend', (e) => {
+                        tile.style.opacity = '1';
+                    });
+
+                    // 清空目标插槽并添加新拼图块
+                    if (existingTile) {
+                        slot.removeChild(existingTile);
+                    }
+                    slot.appendChild(tile);
+                    slot.classList.add('filled');
+
+                    // 更新状态
+                    tilesState[targetSlotIndex] = imageIndex;
+
+                    // 如果目标插槽原有拼图块，将其放置到拖拽来源位置
+                    if (existingImageIndex !== -1) {
+                        if (sourceType === 'left-tiles' || sourceType === 'right-tiles') {
+                            // 放回原左右两侧容器
+                            const originalContainer = document.getElementById(sourceType);
+                            createTile(existingImageIndex, originalContainer);
+                        } else if (sourceType === 'slot' && sourceSlotIndex !== -1 && sourceSlotIndex !== targetSlotIndex) {
+                            // 放置到源插槽
+                            const sourceSlot = document.querySelectorAll('.slot')[sourceSlotIndex];
+                            if (sourceSlot) {
+                                const existingTileElement = document.createElement('div');
+                                existingTileElement.classList.add('tile-container');
+                                existingTileElement.dataset.index = existingImageIndex;
+
+                                const existingImg = document.createElement('img');
+                                existingImg.src = `${IMG_PATH}image_part_0${addZero(existingImageIndex + 1)}${IMG_EXT}`;
+                                existingImg.alt = `碎片 ${existingImageIndex}`;
+                                existingTileElement.appendChild(existingImg);
+
+                                // 添加拖拽功能
+                                existingTileElement.draggable = true;
+                                existingTileElement.addEventListener('dragstart', (e) => {
+                                    e.dataTransfer.effectAllowed = 'move';
+                                    e.dataTransfer.setData('text/plain', existingImageIndex.toString());
+                                    e.dataTransfer.setData('text/source-type', 'slot');
+                                    e.dataTransfer.setData('text/source-index', sourceSlotIndex.toString());
+                                    existingTileElement.style.opacity = '0.5';
+                                });
+
+                                existingTileElement.addEventListener('dragend', (e) => {
+                                    existingTileElement.style.opacity = '1';
+                                });
+
+                                sourceSlot.appendChild(existingTileElement);
+                                sourceSlot.classList.add('filled');
+                                tilesState[sourceSlotIndex] = existingImageIndex;
+                            }
+                        }
+                    }
+
+                    // 检查胜利
+                    checkWin();
+                });
+            });
+        }
+
+        // --- 胜利检测与动画 ---
+        function checkWin() {
+            // 检查数组是否恢复 0,1,2...11 的顺序
+            const isWon = tilesState.every((imageIndex, currentPosition) => imageIndex === currentPosition);
+
+            if (isWon) {
+                const board = document.getElementById('game-board');
+                const modal = document.getElementById('modal-overlay');
+                const relicInfo = modal.querySelector('.relic-info');
+                const originalContent = relicInfo.innerHTML;
+
+                // 1. 触发合成动画 (缝隙消失，整体发光)
+                setTimeout(() => {
+                    board.classList.add('merged');
+                }, 100);
+
+                // 2. 显示第一个提示语
+                setTimeout(() => {
+                    modal.style.display = 'flex';
+                    relicInfo.innerHTML = '<h2>🎉</h2><div class="intro-text" style="text-align: center; font-size: 24px; font-weight: bold;">你已复原一段丝路记忆</div>';
+                }, 4000);
+
+                // 3. 显示第二个提示语
+                setTimeout(() => {
+                    relicInfo.innerHTML = '<h2>📜</h2><div class="intro-text" style="text-align: center; font-size: 24px; font-weight: bold;">这件文物的故事，正重新被讲述</div>';
+                }, 6000);
+
+                // 4. 显示文物介绍
+                setTimeout(() => {
+                    relicInfo.innerHTML = originalContent;
+                }, 8000);
+            }
+        }
+
+        // --- 一键修复功能 ---
+        function solvePuzzle() {
+            // 恢复正确的拼图顺序
+            tilesState = [...Array(TOTAL_TILES).keys()];
+
+            // 重新渲染
+            initBoard();
+            initTiles();
+            initDropTargets();
+
+            // 自动填充拼图
+            const slots = document.querySelectorAll('.slot');
+            slots.forEach((slot, index) => {
+                const tile = document.createElement('div');
+                tile.classList.add('tile-container');
+                tile.dataset.index = index;
+
+                const img = document.createElement('img');
+                img.src = `${IMG_PATH}image_part_0${addZero(index + 1)}${IMG_EXT}`;
+                img.alt = `碎片 ${index}`;
+                tile.appendChild(img);
+
+                slot.appendChild(tile);
+                slot.classList.add('filled');
+            });
+
+            // 检查胜利
+            checkWin();
+        }
+
+        // --- 更新游戏标题和文物信息 ---
+        function updateGameInfo() {
+            const gameTitle = document.getElementById('game-title');
+            const relicInfo = document.querySelector('.relic-info');
+
+            switch (id) {
+                case '2':
+                    gameTitle.textContent = '木雕拼图';
+                    relicInfo.innerHTML = `
+                        <h2>乌兹别克斯坦传统木雕</h2>
+                        <div>Wood Carving</div>
+                        <div class="intro-text">
+                            <div><strong>产地：</strong>乌兹别克斯坦</div>
+                            <div><strong>时期：</strong>中世纪伊斯兰文明繁荣时期</div>
+                            <div><strong>描述：</strong>乌兹别克斯坦的传统木雕艺术是中亚最具代表性的手工艺之一，历史悠久，可追溯至中世纪伊斯兰文明繁荣时期，尤其在希瓦（Khiva）、**布哈拉（Bukhara）和撒马尔罕（Samarkand）**等古城中保存最为完整。这一艺术形式广泛应用于清真寺、宫殿、民居和陵墓建筑之中，如木门、柱廊、窗框和家具装饰等。在风格上，乌兹别克木雕以几何纹样、植物花卉纹饰和阿拉伯书法元素为主，讲究对称与重复，体现出伊斯兰艺术中“无限延展”的审美理念。雕刻工艺细腻精致，多采用浮雕与镂空技法，通过层次变化营造出丰富的视觉效果。同时，由于宗教文化中避免具象人物形象，装饰更侧重抽象与象征表达。</div>
+                            <p>这种木雕不仅是建筑装饰，更是身份、信仰与审美的体现。它融合了波斯、突厥与伊斯兰文化元素，是丝绸之路上多元文明交汇的典型产物。至今，这一技艺仍在当地手工艺人中传承发展，并被视为乌兹别克斯坦重要的非物质文化遗产之一。</p>
+                        </div>
+                        <button class="close-btn" onclick="location.reload()">再次修复</button>
+                    `;
+                    break;
+                case '3':
+                    gameTitle.textContent = '卧佛拼图';
+                    relicInfo.innerHTML = `
+                        <h2>塔吉克斯坦卧佛</h2>
+                        <div>Ajina Tepe Reclining Buddha</div>
+                        <div class="intro-text">
+                            <div><strong>产地：</strong>塔吉克斯坦</div>
+                            <div><strong>时期：</strong>公元7—8世纪</div>
+                            <div><strong>描述：</strong>塔吉克斯坦的卧佛最著名的是出土于阿吉纳·特佩（Ajina Tepe）遗址的巨大佛像，位于今塔吉克斯坦西南部，年代约为公元7—8世纪。这尊卧佛以泥塑和彩绘工艺制成，长度约13米，是中亚地区现存规模最大的古代佛教造像之一，现藏于塔吉克斯坦国家博物馆。</div>
+                            <p>从造型上看，这尊佛像呈侧卧姿态，通常被认为表现的是释迦牟尼进入涅槃的瞬间（“涅槃像”）。其面部表情安详宁静，衣纹流畅自然，体现出当时成熟的佛教艺术风格，同时也融合了印度、波斯与本地中亚艺术元素，具有明显的跨文化特征。阿吉纳·特佩遗址本身是一处佛教寺院遗址，说明在伊斯兰文化兴起之前，佛教曾在中亚地区广泛传播。卧佛的发现不仅证明了丝绸之路作为宗教与文化传播通道的重要作用，也为研究中亚佛教艺术与历史提供了极为珍贵的实物依据。</p>
+                        </div>
+                        <button class="close-btn" onclick="location.reload()">再次修复</button>
+                    `;
+                    break;
+                case '4':
+                    gameTitle.textContent = '毡毯拼图';
+                    relicInfo.innerHTML = `
+                        <h2>吉尔吉斯斯坦毡毯</h2>
+                        <div>Shyrdak / Ala-kiyiz</div>
+                        <div class="intro-text">
+                            <div><strong>产地：</strong>吉尔吉斯斯坦</div>
+                            <div><strong>时期：</strong>数百年前</div>
+                            <div><strong>描述：</strong>吉尔吉斯斯坦的毡毯是中亚游牧文化中极具代表性的传统手工艺，主要包括Shyrdak（拼接毡毯）和Ala-kiyiz（压花毡毯）**两种类型，历史可追溯至数百年前的草原游牧生活。这类毡毯以羊毛为原料，通过揉压、蒸汽定型等工艺制成，既实用又富有装饰性，是毡房（yurt）内部不可或缺的生活用品。在工艺上，Shyrdak通常通过将不同颜色的毡料剪裁、对称拼接而成，形成鲜明的几何图案；而Ala-kiyiz则是在湿毡制作过程中直接压出花纹，色彩更为柔和自然。图案多取材于自然与生活，如山川、动物角（“羊角纹”）等，象征着力量、繁衍与吉祥，具有丰富的文化寓意。</div>
+                            <p>毡毯不仅是日常生活用品，更是家庭与身份的重要象征。在吉尔吉斯传统中，制作毡毯往往由女性集体完成，既是一种技艺传承，也是一种社会与情感的纽带。如今，这一工艺已被列入非物质文化遗产，成为展示中亚游牧文明与丝绸之路文化交流的重要载体。</p>
+                        </div>
+                        <button class="close-btn" onclick="location.reload()">再次修复</button>
+                    `;
+                    break;
+                case '5':
+                    gameTitle.textContent = '古尔纹样拼图';
+                    relicInfo.innerHTML = `
+                        <h2>土库曼斯坦古尔纹样</h2>
+                        <div>Gül</div>
+                        <div class="intro-text">
+                            <div><strong>产地：</strong>土库曼斯坦</div>
+                            <div><strong>时期：</strong>数百年前</div>
+                            <div><strong>描述：</strong>土库曼斯坦的古尔纹样（Gül）是中亚地毯艺术中最具标志性的装饰元素之一，广泛出现在传统土库曼地毯（Turkmen carpet）上。其名称“Gül”在突厥语中意为“花”，但在实际图案中往往呈现为几何化的八角形或多边形纹样，具有高度抽象和对称的结构。从形式上看，不同部族拥有各自独特的古尔纹样，例如特克（Tekke）、约穆特（Yomut）、萨里克（Saryk）等部族的图案各具特色，这些纹样不仅是装饰，更具有类似“族徽”的功能，可用于识别地毯的来源与制作者身份。古尔通常以重复排列的方式覆盖在红色或深色底纹上，形成节奏感强烈的视觉效果。</div>
+                            <p>古尔纹样承载着丰富的象征内涵。一方面，它体现了游牧民族对自然秩序与宇宙结构的理解，强调对称与循环；另一方面，它也反映了部族认同与社会结构，是传统社会中身份与归属的重要象征。作为丝绸之路文化交流的重要组成部分，土库曼地毯及其古尔纹样融合了波斯、突厥及中亚本土文化元素，展现出多元文明交汇的艺术特征。</p>
+                        </div>
+                        <button class="close-btn" onclick="location.reload()">再次修复</button>
+                    `;
+                    break;
+                default:
+                    gameTitle.textContent = '丝路文物拼图';
+            }
+        }
+
+        // --- 程序入口 ---
+        // 1. 更新游戏信息
+        updateGameInfo();
+        // 2. 初始化中间目标区域
+        initBoard();
+        // 3. 初始化左右碎片区域
+        initTiles();
+        // 4. 初始化拖拽目标
+        initDropTargets();
+        // 5. 为返回按钮添加事件监听器
+        document.getElementById('back-btn').addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+
+        // 6. 为一键恢复按钮添加事件监听器
+        document.getElementById('reset-btn').addEventListener('click', solvePuzzle);
+
+    </script>
+</body>
+
+</html>

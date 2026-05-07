@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
   // 用户信息弹窗逻辑
-  // 处理用户点击头像图标以显示或隐藏用户信息弹窗
   const icon = document.querySelector(".pic");
   let userPopup;
 
@@ -30,52 +29,72 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // 地图圆点设置
-  // 创建地图上的交互圆点，并添加提示框和点击事件
   const map = document.querySelector(".pic-3");
   const detailPanel = document.querySelector(".section");
   detailPanel.classList.remove("visible");
 
+  // Approximate coordinates for the 5 locations on the map image
+  // The map is 880x473 roughly.
+  // We have a map image which we are overlaying dots on.
+  // Let's use percentage relative to the .pic-3 container size directly.
+  // 塔姆加里岩画: East (Right) ~75% X, ~35% Y
+  // 亚萨维陵墓: South (Bottom) ~55% X, ~60% Y
+  // 奥特拉尔古城: South West ~45% X, ~65% Y
+  // 塔拉兹: South East ~65% X, ~70% Y
+  // 萨乌兰遗址: South ~50% X, ~62% Y
+
   const dotsData = [
-    { top: 180, left: 150, text: "费尔干纳峡谷的沙漠城堡群" },
+    { top: 180, left: 150, text: "费尔干纳峡谷" },
     { top: 360, left: 290, text: "伊钱卡拉古城" },
     { top: 375, left: 300, text: "希瓦" },
     { top: 485, left: 440, text: "泽拉夫尚-卡拉库姆廊道" },
     { top: 500, left: 450, text: "布哈拉历史中心" },
-    { top: 475, left: 580, text: "沙赫里萨布兹历史中心" },
+    { top: 475, left: 580, text: "沙赫里萨布兹" },
     { top: 490, left: 580, text: "撒马尔罕" },
     { top: 380, left: 680, text: "首都：塔什干" }
   ];
 
-  dotsData.forEach((pos) => {
+  // 原始地图容器的宽高基准 (基于 .pic-3)
+  const mapBaseWidth = 880;
+  const mapBaseHeight = 472.915; 
+  // 原始地图相对于父容器的偏移量
+  const mapOffsetX = 90;
+  const mapOffsetY = 150;
+
+  dotsData.forEach((pos, index) => {
     const dot = document.createElement("div");
+    dot.className = "map-dot";
     dot.style.position = "absolute";
-    dot.style.width = "14px";
-    dot.style.height = "14px";
     dot.style.borderRadius = "50%";
     dot.style.background = "#804430";
     if (pos.text === "首都：塔什干") {
       dot.style.background = "#ffd700"; // 初始设为黄色
     }
-    dot.style.top = `${pos.top}px`;
-    dot.style.left = `${pos.left}px`;
+    
+    const relativeTop = pos.top - mapOffsetY;
+    const relativeLeft = pos.left - mapOffsetX;
+    dot.style.top = `${(relativeTop / mapBaseHeight) * 100}%`;
+    dot.style.left = `${(relativeLeft / mapBaseWidth) * 100}%`;
     dot.style.cursor = "pointer";
     dot.style.zIndex = "45";
     dot.style.boxShadow = "0px 0px 8px rgba(0,0,0,0.2)";
     dot.style.transition = "transform 0.3s ease";
 
+
     // 提示框行为
-    // 创建提示框并设置其样式和显示逻辑
     const tooltip = document.createElement("div");
     tooltip.textContent = pos.text;
     tooltip.style.position = "absolute";
-    tooltip.style.top = `${pos.top - 50}px`;
-    tooltip.style.left = `${pos.left - 35}px`;
+    tooltip.style.top = "-40px";
+    tooltip.style.left = "50%";
+    tooltip.style.transform = "translateX(-50%)";
     tooltip.style.background = "#ffffff";
     tooltip.style.padding = "6px 10px";
     tooltip.style.boxShadow = "0px 0px 10px rgba(0,0,0,0.2)";
     tooltip.style.borderRadius = "6px";
     tooltip.style.display = "none";
     tooltip.style.zIndex = "100";
+    tooltip.style.whiteSpace = "nowrap";
 
     dot.addEventListener("mouseover", () => {
       dot.style.background = "#caa08c";
@@ -88,43 +107,68 @@ document.addEventListener("DOMContentLoaded", function () {
       tooltip.style.display = "none";
     });
     dot.addEventListener("click", () => {
-      // 右侧面板显示隐藏逻辑
-      // 切换右侧信息面板的可见性
-      detailPanel.classList.toggle("visible");
+      // Trigger the corresponding tab click
+      buttons[index].click();
+      detailPanel.classList.add("visible");
     });
 
-    map.parentElement.appendChild(dot);
-    map.parentElement.appendChild(tooltip);
+    dot.appendChild(tooltip);
+    map.appendChild(dot);
+  });
+
+  // 处理关闭逻辑
+  const closeDetailPanel = () => {
+    detailPanel.classList.remove("visible");
+  };
+
+  // 1. 关闭按钮点击
+  const closeBtn = document.querySelector(".section-close-btn");
+  if (closeBtn) {
+    closeBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      closeDetailPanel();
+    });
+  }
+
+  // 2. 点击外部区域关闭
+  document.addEventListener("click", (e) => {
+    // 如果详情面板是可见的，并且点击的目标既不是面板本身，也不是面板的子元素，
+    // 并且点击的目标也不是地图上的圆点（防止刚打开就关闭）
+    const isClickInsidePanel = detailPanel.contains(e.target);
+    const isClickOnDot = e.target.classList.contains("map-dot") || e.target.closest(".map-dot");
+    
+    if (detailPanel.classList.contains("visible") && !isClickInsidePanel && !isClickOnDot) {
+      closeDetailPanel();
+    }
+  });
+
+  // 3. Esc 键关闭
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeDetailPanel();
+    }
   });
 
   // 中间按钮设置
-  const xiwaText = `希瓦古城位于乌兹别克斯坦西南部的花剌子模州，始建于公元10世纪，是古丝绸之路上重要的商贸与文化枢纽。作为花剌子模帝国的核心城市，希瓦曾是中亚伊斯兰文明的璀璨明珠，被誉为“沙漠中的博物馆”。1990年，希瓦古城内城（伊钦·卡拉）被联合国教科文组织列为世界文化遗产。`;
-  const historyText = `阿米尔·图拉经学院
-建于18世纪，是希瓦汗国时期的伊斯兰学术中心，以其精美的蓝色瓷砖和几何图案闻名。
-修复前，建筑墙体裂缝达30厘米，地基下沉50厘米，濒临坍塌。
+  const text1 = `费尔干纳峡谷（Fergana Valley）\n\n费尔干纳峡谷位于乌兹别克斯坦、吉尔吉斯斯坦与塔吉克斯坦交界处，是中亚最肥沃、人口最密集的地区之一。三面环山的地理环境，使其形成了独特的生态与人文空间，自古以来就是农业与手工业的重要中心。\n在丝绸之路时期，费尔干纳以出产“汗血宝马”（又称天马）而闻名，这些优良马种曾被汉朝视为战略资源，直接促成了中亚与中国之间的重要交流。除了经济意义，这里也是多民族、多文化交汇之地，融合了波斯、突厥与中原文化因素，是理解中亚文化多样性的重要区域。`;
+  const text2 = `伊钱卡拉古城（Itchan Kala）\n\n伊钱卡拉古城位于乌兹别克斯坦希瓦市，是一座保存极为完整的中世纪城内城（内城）。整座城市被高大的夯土城墙环绕，内部集中了清真寺、经学院、宫殿与宣礼塔等建筑，构成一个高度完整的伊斯兰城市空间。\n作为花剌子模地区的重要中心，伊钱卡拉在16至19世纪达到繁荣，其建筑风格以蓝色瓷砖装饰和几何图案著称，展现出典型的中亚伊斯兰艺术特征。今天，这里几乎像一座“露天博物馆”，为研究中亚城市形态与宗教生活提供了直观的历史样本。`;
+  const text3 = `希瓦古城\n\n希瓦古城位于乌兹别克斯坦西南部的花剌子模州，始建于公元10世纪，是古丝绸之路上重要的商贸与文化枢纽。作为花剌子模帝国的核心城市，希瓦曾是中亚伊斯兰文明的璀璨明珠，被誉为“沙漠中的博物馆”。1990年，希瓦古城内城（伊钦·卡拉）被联合国教科文组织列为世界文化遗产。`;
+  const text4 = `泽拉夫尚-卡拉库姆廊道（Zeravshan–Karakum Corridor）\n\n泽拉夫尚-卡拉库姆廊道是丝绸之路中亚段的重要组成部分，连接撒马尔罕、布哈拉等历史名城，并延伸至土库曼斯坦的沙漠地区。这一廊道以绿洲—沙漠交替的地理特征为基础，形成了一条依赖水源分布的交通网络。\n沿线分布着大量古城遗址、商队驿站与灌溉系统遗迹，体现出人类在干旱环境中建立稳定交流网络的能力。它不仅是物资流通的通道，也是思想、宗教与技术传播的重要路径，是“丝绸之路如何运作”的一个典型案例。`;
+  const text5 = `布哈拉历史中心（Historic Centre of Bukhara）\n\n布哈拉是中亚最古老的城市之一，其历史中心保存了大量9至17世纪的建筑群，是伊斯兰文化的重要中心。这里曾是学术与宗教活动的核心，汇聚了众多学者与神学家。\n代表性建筑包括卡扬清真寺、卡扬宣礼塔以及众多经学院，整体布局体现出典型的伊斯兰城市结构。布哈拉不仅是贸易城市，更是“知识与信仰之城”，在中亚伊斯兰文化传播中占据核心地位。`;
+  const text6 = `沙赫里萨布兹（Shahrisabz）\n\n沙赫里萨布兹是帖木儿的出生地，也是其重要的政治与文化中心之一。这里最著名的遗址是阿克萨赖宫殿遗址，其巨大的入口拱门至今仍令人震撼，象征着帖木儿帝国的权力与雄心。\n城市中还保留有宗教建筑与陵墓群，体现出帖木儿时期建筑的宏伟规模与精致装饰。沙赫里萨布兹不仅具有历史意义，也体现了帝国如何通过建筑塑造政治象征。`;
+  const text7 = `撒马尔罕（Samarkand）\n\n撒马尔罕是丝绸之路上最著名的城市之一，被誉为“东方明珠”。在帖木儿帝国时期，这里成为帝国首都，并发展为文化与艺术中心。\n最具代表性的雷吉斯坦广场，由三座宏伟的经学院组成，是中亚建筑艺术的巅峰之作。此外，沙赫静达陵墓群等遗址展示了精美的瓷砖工艺与宗教建筑风格。撒马尔罕不仅是贸易枢纽，更象征着权力、艺术与知识的汇聚`;
+  const text8 = `塔什干（Tashkent）\n\n塔什干是乌兹别克斯坦的首都，也是中亚地区的重要现代城市。其历史可以追溯至古代丝绸之路时期，是连接草原与绿洲的重要节点。\n尽管经历了多次战争与地震，塔什干仍保留了一些历史遗迹，如古城部分、清真寺与传统集市。同时，这座城市也融合了苏联时期的现代规划与伊斯兰传统文化，展现出中亚城市在现代化进程中的独特面貌。`;
 
-哈桑·穆拉德库什别吉清真寺
-18世纪末建造，是希瓦古城内小型清真寺的典型代表，内部装饰极具伊斯兰风格。
-
-伊钦·卡拉内城
-古城核心区，保留8座清真寺、31座经学院、14座宣礼塔等建筑，完整呈现中亚伊斯兰建筑艺术。`;
-  const remainsText = `非物质遗产：木雕门窗
-希瓦古城的木雕艺术可追溯至10-12世纪的花剌子模王朝时期，在16-19世纪希瓦汗国时代达到鼎盛。作为丝绸之路上重要的商贸中心，希瓦融合了波斯细密画风格、突厥草原纹样和阿拉伯几何美学，形成了独特的中亚木雕流派。
-希瓦木雕保留了丰富的花纹图案，例如伊斯利米，是一种具有波斯风格的卷草纹，常用与宫殿大门框饰；而吉里赫，则是一种几何化的植物藤蔓造型，在清真寺敏拜尔的讲坛上可以找到；阿拉伯书法也是主要的样式之一，主要以《古兰经》经文雕刻来装饰陵墓门楣。
-
-希瓦木雕学校每年培养30名学徒，作品作为国礼赠送给"一带一路"沿线国家。2023年上海进博会上，希瓦木雕大师鲁斯塔姆现场演示将敦煌飞天纹样融入传统吉里赫纹。"每一道刀痕都是历史的密码，我们雕刻的不是木头，是千年文明的对话。"——希瓦非遗木雕传承人 卡里莫夫。这些精美木雕不仅是建筑装饰，更是中亚多元文明交汇的立体史书，见证着丝绸之路上的智慧交融。`;
-  const archaeText = `2014年，为了恢复阿米尔·图拉经学院和哈桑清真寺的原貌，同时改善古城基础设施，中乌两国在“一带一路”框架下启动希瓦古城修复项目，由中国文化遗产；研究院承担。
-希瓦古城的旅游项目是当地的经济支柱。中国文物修复工作队在希瓦古城开展的工作，得到了乌兹别克斯坦社会各界的高度关注，联合国教科文组织驻乌兹别克斯坦代表对中国采取的技术与理念十分认同。
-中国文物修复团队修复整治后，内城正门区域恢复了昔日的风采，当地已经重新开放，使古城南北轴线再次畅通。
-同时，在木雕艺术的修复和传承上，中国团队引入三维扫描记录雕刻纹样，协助建立数字纹样库（已收录1200种图案）。并且联合培训当地工匠，复兴传统工具使用（如波斯弧形凿、突厥角尺）。`;
-
-
-  const contentMap = [xiwaText, historyText, remainsText, archaeText];
+  const contentMap = [text1, text2, text3, text4, text5, text6, text7, text8];
   const imageMap = [
-    "images/xiwa.jpg",
-    "",
-    "images/remains.jpg",
-    ""
+    "images/Fergana.png", 
+    "images/Itchan.png", 
+    "images/xiwa.jpg", 
+    "images/Zeravshan–Karakum.png", 
+    "images/Bukhara.png",
+    "images/Shahrisabz.png", 
+    "images/Samarkand.png", 
+    "images/Tashkent.png"
   ];
 
   const buttons = document.querySelectorAll(".box-3");
@@ -137,9 +181,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (imageMap[index]) {
           imgElement.src = imageMap[index];
           imgElement.style.display = "block";
-         } else {
-             imgElement.style.display = "none"; // 没图就隐藏
-             }
+        } else {
+          imgElement.style.display = "none";
+        }
       }
       detailPanel.classList.add("visible");
     });
@@ -156,9 +200,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   Object.keys(buttonContentMap).forEach(selector => {
     const button = document.querySelector(selector);
-    button.addEventListener("click", () => {
-      document.querySelector(".text-c").textContent = buttonContentMap[selector];
-    });
+    if (button) {
+      button.addEventListener("click", () => {
+        document.querySelector(".text-c").textContent = buttonContentMap[selector];
+      });
+    }
   });
   
   // 图片点击放大预览逻辑
@@ -191,17 +237,3 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   document.body.appendChild(backBtn);
 });
-
-/* Dots Data */
-const dotsData = [
-  { text: "Preview Content 1" },
-  { text: "Preview Content 2" },
-  { text: "Preview Content 3" },
-  { text: "Preview Content 4" },
-  { text: "Preview Content 5" },
-  { text: "Preview Content 6" },
-  { text: "Preview Content 7" },
-  { text: "Preview Content 8" },
-];
-
-

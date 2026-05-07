@@ -1,0 +1,636 @@
+/* === 全局变量定义 === */
+:root {
+  --default-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei", "Source Han Sans CN", sans-serif;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.main-container, .main-container * {
+  box-sizing: border-box;
+}
+
+input, select, textarea, button {
+  outline: 0;
+}
+
+.main-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: #f2f2f2;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* === 顶部导航栏 === */
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  padding: 20px 5%; 
+  background: #ffffff;
+  z-index: 100;
+  border-radius: 0 0 52px 52px;
+  box-shadow: 4px 12px 9px 0 rgba(50, 23, 6, 0.4);
+  height: auto;
+  min-height: 80px;
+}
+
+.text {
+  color: #000000;
+  font-family: 'Ma Shan Zheng', Source Han Sans CN, var(--default-font-family);
+  font-size: clamp(24px, 4vw, 45px);
+  font-weight: 450;
+  white-space: nowrap;
+  margin-left: 40px;
+  z-index: 3;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 4;
+}
+
+.wrapper-2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 5;
+}
+
+.text-2 {
+  color: #000000;
+  font-family: Source Han Sans CN, var(--default-font-family);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* === 页面模糊背景 === */
+.img-2 {
+  position: fixed;
+  width: 100vw; height: 100vh;
+  top: 0; left: 0;
+  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/cKjeepi8Ev.png) no-repeat center / cover;
+  opacity: 0.4; filter: blur(4px);
+  z-index: 3; pointer-events: none;
+}
+
+/* === 中间地图及详情区 === */
+.box-2 {
+  position: relative;
+  width: 100%;
+  min-height: 750px;
+  background: #804430;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 140px 20px 40px; 
+  z-index: 2;
+  overflow: visible; 
+}
+
+/* === 地图圆点 === */
+.map-dot {
+  width: 14px;
+  height: 14px;
+}
+
+/* === 地图区域 === */
+.pic-3 {
+  position: relative;
+  width: 100%;
+  max-width: 880px;
+  aspect-ratio: 880 / 473; 
+  background: url(images/map.png) no-repeat center / contain;
+  z-index: 45;
+  margin: 0 auto;
+}
+
+/* === 详情弹窗 === */
+.section {
+  position: absolute;
+  right: 0;
+  top: 135px;
+  width: 600px;
+  height: 610px;
+  background: #f2f2f2;
+  z-index: 500; /* 提升层级，确保在所有层级之上 */
+  border-radius: 35px 0 0 35px;
+  box-shadow: 5px 12px 8.3px 0 rgba(50, 23, 6, 0.4);
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.4s ease-out, opacity 0.3s ease-out;
+  display: flex;
+  align-items: flex-start;
+  padding: 30px;
+}
+
+.section.visible {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* === 关闭按钮 === */
+.section-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  background: #804430;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  line-height: 1;
+  padding-bottom: 2px;
+}
+
+.section-close-btn:hover {
+  background: #caa08c;
+  transform: scale(1.1) rotate(90deg);
+}
+
+/* === 侧边栏按钮 === */
+.section-tabs {
+  position: absolute;
+  left: 20px;
+  top: 0;
+  height: 100%;
+}
+
+.box-3 {
+  position: absolute;
+  left: 0;
+  width: 130px;
+  height: 60px;
+  background: #804430;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  z-index: 50;
+}
+
+/* 恢复原有的绝对定位top值 */
+.box-3:nth-child(1) { top: 30px; }
+.box-3:nth-child(2) { top: 110px; }
+.box-3:nth-child(3) { top: 190px; }
+.box-3:nth-child(4) { top: 270px; }
+.box-3:nth-child(5) { top: 350px; }
+.box-3:nth-child(6) { top: 430px; }
+.box-3:nth-child(7) { top: 510px; }
+
+
+.box-3:hover {
+  background-color: #caa08c;
+  transform: scale(1.05);
+}
+
+.text-4 {
+  color: #ffffff;
+  font-family: 'Ma Shan Zheng', Source Han Sans CN, var(--default-font-family);
+  font-size: 16px;
+  z-index: 51;
+}
+
+/* === 详情内容区 === */
+.section-content-wrapper {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 140px; /* 为左侧绝对定位的box-3留出空间 */
+}
+
+.section-2 {
+  width: 100%;
+  height: 100%; 
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.25);
+  padding: 25px;
+  overflow-y: auto;
+}
+
+.text-3 {
+  color: #000000;
+  font-family: Source Han Sans CN, var(--default-font-family);
+  font-size: 16px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.content-img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin-top: 20px;
+  border-radius: 16px;
+  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.25);
+  align-self: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.content-img:hover {
+  transform: scale(1.05);
+}
+
+/* === 底部模块区域 === */
+.section-4 {
+  position: relative;
+  width: 100%;
+  background: #f2f2f2;
+  z-index: 11;
+  border-radius: 52px 52px 0 0;
+  box-shadow: 0px -12px 24px rgba(0, 0, 0, 0.15);
+  padding: 40px 20px 100px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.section-tip {
+  margin-bottom: 20px;
+}
+
+.tip-text {
+  color: #666666;
+  font-family: Source Han Sans CN, var(--default-font-family);
+  font-size: 14px;
+}
+
+.group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* === 底部5个分类卡片 === */
+.pic-4, .img-3, .pic-7, .mask-group, .mask-group-2 {
+  position: relative;
+  width: 133px;
+  height: 491px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.pic-4 { background-image: url(images/geography.png); }
+.img-3 { background-image: url(images/history.png); }
+.pic-7 { background-image: url(images/resources.png); }
+.mask-group { background-image: url(images/race.png); }
+.mask-group-2 { background-image: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/F33i5EZNNJ.png); height: 429px; margin-top: 62px; }
+
+.pic-4:hover, .img-3:hover, .pic-7:hover, .mask-group:hover, .mask-group-2:hover {
+  transform: scale(1.05);
+}
+
+.geography, .history, .industry, .ethnicity, .funfact {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 70%;
+  background: linear-gradient(to bottom, rgba(179, 124, 105, 0) 0%, #b37c69 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  transition: all 0.3s ease;
+}
+
+.geography:hover, .history:hover, .industry:hover, .ethnicity:hover, .funfact:hover {
+  background: transparent;
+}
+
+.text-7 {
+  color: #ffffff;
+  font-family: 'Ma Shan Zheng', Source Han Sans CN, var(--default-font-family);
+  font-size: 48px;
+  writing-mode: vertical-rl;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  z-index: 2;
+}
+
+.pic-5 {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 259px;
+  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/QOgO7wWHFw.png) no-repeat bottom / contain;
+  z-index: 1;
+}
+
+/* === 文字介绍长框 === */
+.rectangle {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+  height: 491px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-shadow: 0px 12px 24px rgba(0,0,0,0.1);
+  margin-top: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  align-self: stretch;
+}
+
+.text-c {
+  color: #000000;
+  font-family: Source Han Sans CN, var(--default-font-family);
+  font-weight: 500;
+  line-height: 1.9;
+  font-size: 15px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-align: left;
+  padding-right: 12px;
+  box-sizing: border-box;
+}
+
+.text-c::-webkit-scrollbar {
+  width: 8px;
+}
+
+.text-c::-webkit-scrollbar-thumb {
+  background: rgba(128, 68, 48, 0.22);
+  border-radius: 999px;
+}
+
+.section-7 {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.detail-button button {
+  background-color: transparent;
+  color: rgba(77, 77, 77, 0.8);
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.detail-button button:hover {
+  color: #000000;
+  transform: scale(1.05);
+}
+
+.pic-c {
+  width: 14px; height: 14px;
+  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/03nXjxnJTe.png) no-repeat center / cover;
+  opacity: 0.5;
+}
+
+/* === 底部版权区 === */
+.section-8 {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 60px;
+  background: #804430;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 14;
+}
+
+.text-e {
+  color: #ffffff;
+  font-size: 12px;
+  text-align: center;
+  padding: 0 20px;
+}
+
+/* === 图片放大模态框 === */
+.image-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+}
+
+.image-modal-content {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* === 返回按钮 === */
+.back-home {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 10px 16px;
+  background: #b6adad;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 1000;
+  font-family: Source Han Sans CN, var(--default-font-family);
+  font-size: 14px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  transition: all .2s ease;
+}
+
+.back-home:hover {
+  background: #2a9bff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+/* ========================================================= */
+/* 响应式断点 (Responsive Breakpoints) */
+/* ========================================================= */
+
+/* 平板及竖屏设备 */
+@media screen and (max-width: 1024px) {
+  .box-2 {
+    padding-top: 160px;
+    align-items: flex-start;
+  }
+  
+  .section {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0; right: 0;
+    width: 100%;
+    height: 75vh; /* 增加高度以更好展示内容 */
+    border-radius: 35px 35px 0 0;
+    flex-direction: column;
+    transform: translateY(100%);
+    padding: 20px;
+    z-index: 500;
+  }
+
+  .section.visible {
+    transform: translateY(0);
+  }
+
+  .section-close-btn {
+    top: 10px;
+    right: 10px;
+  }
+
+  .section-tabs {
+    position: relative;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    margin-right: 0;
+    margin-bottom: 20px;
+    overflow-x: auto; 
+    padding-bottom: 10px;
+  }
+
+  .box-3 {
+    position: relative;
+    top: 0 !important;
+    flex-shrink: 0;
+    width: 100px; height: 40px;
+    margin-right: 15px;
+  }
+  
+  .text-4 { font-size: 16px; }
+
+  .map-dot {
+    width: 2vw;
+    height: 2vw;
+    min-width: 10px;
+    min-height: 10px;
+  }
+
+  .section-content-wrapper {
+    width: 100%;
+    margin-left: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* 允许内容区域滚动 */
+  }
+
+  .section-2 {
+    min-height: 220px; /* 确保至少显示约 5 行文字 */
+    flex: 0 0 auto;
+    padding: 20px;
+  }
+
+  .content-img {
+    max-width: 100%;
+    margin-top: 15px;
+    flex: 0 0 auto;
+  }
+
+  .group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 15px;
+  }
+
+  .mask-group-2 {
+    margin-top: 0;
+    height: 491px;
+  }
+  
+  .rectangle {
+    grid-column: 1 / -1;
+    margin-top: 20px;
+    max-width: 100%;
+    height: auto;
+    min-height: 320px;
+  }
+}
+
+/* 手机设备 */
+@media screen and (max-width: 768px) {
+  .box {
+    padding: 15px;
+    border-radius: 0 0 30px 30px;
+  }
+
+  .text {
+    font-size: 24px;
+  }
+  
+  .wrapper {
+    display: none; 
+  }
+
+  .back-home {
+    top: 80px;
+    left: 10px;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .section-4 {
+    border-radius: 30px 30px 0 0;
+  }
+
+  .group {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 针对特别矮的横屏设备优化 */
+@media screen and (orientation: landscape) and (max-height: 600px) {
+  .box-2 {
+    min-height: 100vh;
+  }
+  .section {
+    height: 80vh;
+    top: 10vh;
+  }
+}

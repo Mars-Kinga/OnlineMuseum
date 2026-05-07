@@ -1,0 +1,438 @@
+:root {
+  --default-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei", "Source Han Sans CN", sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hall-page,
+.hall-page * {
+  box-sizing: border-box;
+}
+
+.hall-page {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: #6f3a2a;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.hall-bg {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/cKjeepi8Ev.png) no-repeat center / cover;
+  opacity: 0.4;
+  filter: blur(4px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.museum-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 5%;
+  background: #ffffff;
+  z-index: 100;
+  border-radius: 0 0 52px 52px;
+  box-shadow: 4px 12px 9px 0 rgba(50, 23, 6, 0.4);
+  min-height: 80px;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.nav-back-btn {
+  padding: 10px 16px;
+  background: #b6adad;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: Source Han Sans CN, var(--default-font-family);
+  font-size: 14px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.nav-back-btn:hover {
+  background: #8b7f7f;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1;
+  min-width: 0;
+}
+
+
+.nav-link {
+  color: #000000;
+  font-family: 'Ma Shan Zheng', Source Han Sans CN, var(--default-font-family);
+  font-size: clamp(24px, 4vw, 45px);
+  font-weight: 450;
+  white-space: nowrap;
+  margin-left: 40px;
+}
+
+.hall-launch-stage {
+  position: relative;
+  width: calc(100% - 44px);
+  margin: 132px 22px 24px;
+  min-height: calc(100vh - 180px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.hall-stage-viewer {
+  display: block;
+  width: 100%;
+  height: calc(100vh - 180px);
+  min-height: 620px;
+  background: transparent;
+}
+
+.hall-stage-tip {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #7b4e28;
+  font-family: Source Han Sans CN, var(--default-font-family);
+  font-size: 14px;
+  line-height: 1;
+  box-shadow: 0 10px 24px rgba(50, 23, 6, 0.14);
+  white-space: nowrap;
+}
+
+.hall-content {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 0 20px 0;
+  z-index: 20;
+  transform: translateY(calc(100% - 44px));
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.45s ease, opacity 0.3s ease;
+}
+
+.hall-content.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.model-stage {
+  width: calc(100% - 4px);
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 52px 52px 0 0;
+  box-shadow: 0 -12px 24px rgba(0, 0, 0, 0.15);
+  padding: 36px 28px 40px;
+  max-height: calc(100vh - 132px);
+  overflow: hidden;
+}
+
+.top-toolbar {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 28px;
+}
+
+.viewer-hint {
+  margin-bottom: 20px;
+  color: rgba(123, 78, 40, 0.72);
+  font-family: Source Han Sans CN, var(--default-font-family);
+  font-size: 14px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+}
+
+.model-switcher {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.switch-btn {
+  min-width: 148px;
+  padding: 12px 24px;
+  border: 1px solid #f3dfc8;
+  background: rgba(255, 250, 245, 0.9);
+  color: #814531;
+  font-size: 16px;
+  font-family: Source Han Sans CN, var(--default-font-family);
+  cursor: pointer;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+}
+
+.switch-btn:hover,
+.switch-btn.is-active {
+  background: #caa08c;
+  color: #ffffff;
+  border-color: #caa08c;
+  transform: translateY(-1px);
+}
+
+.stage-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(300px, 0.72fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.viewer-wrap {
+  width: 100%;
+  min-height: 68vh;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 30px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(242, 242, 242, 0.95) 0%, rgba(233, 223, 212, 0.92) 100%);
+  box-shadow: 0 18px 40px rgba(76, 46, 33, 0.16);
+}
+
+.museum-viewer {
+  display: block;
+  width: 100%;
+  height: 68vh;
+  min-height: 620px;
+  background: transparent;
+  touch-action: pan-y;
+}
+
+.exhibit-intro {
+  width: 100%;
+  height: 68vh;
+  min-height: 620px;
+  background: #ffffff;
+  border-radius: 32px;
+  padding: 26px 22px 22px;
+  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
+  align-self: stretch;
+  border: 1px solid rgba(128, 68, 48, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.intro-title {
+  margin: 0 0 16px;
+  color: #000000;
+  font-family: 'Ma Shan Zheng', Source Han Sans CN, var(--default-font-family);
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 450;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(128, 68, 48, 0.12);
+  flex-shrink: 0;
+}
+
+.intro-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  padding-right: 6px;
+  min-height: 0;
+}
+
+.intro-stack::-webkit-scrollbar {
+  width: 8px;
+}
+
+.intro-stack::-webkit-scrollbar-thumb {
+  background: rgba(128, 68, 48, 0.26);
+  border-radius: 999px;
+}
+
+.intro-card {
+  background: #f8f5f1;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: inset 0 0 0 1px rgba(128, 68, 48, 0.08);
+  min-height: auto;
+}
+
+.intro-card-title {
+  margin: 0 0 12px;
+  color: #804430;
+  font-family: 'Ma Shan Zheng', Source Han Sans CN, var(--default-font-family);
+  font-size: 28px;
+  font-weight: 450;
+}
+
+.intro-card-text {
+  margin: 0;
+  color: #000000;
+  font-family: Source Han Sans CN, var(--default-font-family);
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.intro-card-image {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 18px 0 0;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+@media screen and (max-width: 1024px) {
+  .hall-launch-stage {
+    width: calc(100% - 28px);
+    margin: 132px 14px 18px;
+    min-height: calc(100vh - 170px);
+  }
+
+  .hall-stage-viewer {
+    height: calc(100vh - 170px);
+    min-height: 520px;
+  }
+
+  .hall-content {
+    padding: 0 14px 0;
+    transform: translateY(calc(100% - 34px));
+  }
+
+  .stage-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .viewer-wrap {
+    min-height: 58vh;
+  }
+
+  .museum-viewer {
+    height: 58vh;
+    min-height: 460px;
+  }
+
+  .exhibit-intro {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+  }
+
+  .intro-stack {
+    overflow: visible;
+    padding-right: 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .museum-nav {
+    padding: 15px;
+    border-radius: 0 0 30px 30px;
+  }
+
+  .nav-link {
+    font-size: 24px;
+    text-align: left;
+    width: 100%;
+  }
+
+  .hall-launch-stage {
+    width: calc(100% - 16px);
+    margin: 118px 8px 14px;
+    min-height: calc(100vh - 146px);
+  }
+
+  .hall-stage-viewer {
+    height: calc(100vh - 146px);
+    min-height: 420px;
+  }
+
+  .hall-stage-tip {
+    bottom: 18px;
+    padding: 10px 18px;
+    font-size: 13px;
+  }
+
+  .hall-content {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 0 8px 0;
+    transform: translateY(calc(100% - 26px));
+  }
+
+  .model-stage {
+    width: 100%;
+    padding: 24px 16px 28px;
+    border-radius: 30px 30px 0 0;
+    max-height: calc(100vh - 118px);
+  }
+
+  .top-toolbar {
+    margin-bottom: 20px;
+  }
+
+  .viewer-hint {
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+
+  .switch-btn {
+    width: 100%;
+  }
+
+  .viewer-wrap {
+    min-height: 52vh;
+    border-radius: 22px;
+  }
+
+  .museum-viewer {
+    height: 52vh;
+    min-height: 360px;
+  }
+
+  .exhibit-intro {
+    height: auto;
+    min-height: 0;
+    padding: 20px;
+    border-radius: 22px;
+  }
+
+  .intro-card {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .intro-card-title {
+    font-size: 24px;
+  }
+}

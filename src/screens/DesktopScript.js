@@ -66,5 +66,8 @@ export default {
     getTooltip(dot) {
       return { title: dot.title || dot.name, content: dot.content || '' };
     },
+    goToPuzzle() {
+      window.location.href = "/legacy/puzzle/index.html";
+    }
   },
 };

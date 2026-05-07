@@ -1,14 +1,8 @@
 /* === 全局变量定义 === */
-/* 描述：定义全站默认字体系列，统一字体样式 */
 :root {
-  --default-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC",
-    "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei",
-    "Source Han Sans CN", sans-serif;
+  --default-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei", "Source Han Sans CN", sans-serif;
 }
 
-/* === 页面基础样式 === */
-/* 描述：设置页面和 body 的基础尺寸与边距 */
 html, body {
   margin: 0;
   padding: 0;
@@ -16,721 +10,441 @@ html, body {
   height: 100%;
 }
 
-/* === 主容器及所有子元素盒模型设置 === */
-/* 描述：确保所有元素尺寸计算包含 padding 和 border */
-.main-container,
-.main-container * {
+.main-container, .main-container * {
   box-sizing: border-box;
 }
 
-/* === 表单元素默认样式重置 === */
-/* 描述：移除默认的轮廓线条，提升视觉一致性 */
-input,select,textarea,button {
+input, select, textarea, button {
   outline: 0;
 }
 
-/* === 主容器整体背景与定位 === */
-/* 描述：设置页面主体的背景、最小高度与居中效果 */
 .main-container {
   position: relative;
   width: 100%;
   min-height: 100vh;
   margin: 0 auto;
   background: #f2f2f2;
-  /* overflow: hidden; */
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
 }
 
-/* === 顶部导航栏（国家名称 + 用户信息） === */
-/* 描述：白色圆角顶部栏，内含国家名称、头像、用户名等 */
+/* === 顶部导航栏 === */
 .box {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: nowrap;
   position: fixed;
-  height: 46px;
-  top: 0;
-  right: 0;
-  left: 0;
-  padding: 40px 120px 40px 120px;
+  top: 0; left: 0; right: 0;
+  padding: 20px 5%; 
   background: #ffffff;
   z-index: 100;
   border-radius: 0 0 52px 52px;
   box-shadow: 4px 12px 9px 0 rgba(50, 23, 6, 0.4);
+  height: auto;
+  min-height: 80px;
 }
 
-/* === 国家名称文本样式 === */
-/* 描述：显示顶部栏中的国家名称（如乌兹别克斯坦），字体较大 */
 .text {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  flex-shrink: 0;
-  flex-basis: auto;
-  position: relative;
-  width: 641px;
-  height: 61px;
   color: #000000;
   font-family: 'Ma Shan Zheng', Source Han Sans CN, var(--default-font-family);
-  font-size: 45px;
+  font-size: clamp(24px, 4vw, 45px);
   font-weight: 450;
-  line-height: 55px;
-  text-align: left;
   white-space: nowrap;
+  margin-left: 40px;
   z-index: 3;
 }
 
-/* === 用户信息整体容器 === */
-/* 描述：主元素包括wrapper-2和底部细线（pic-2） */
 .wrapper {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  flex-wrap: nowrap;
-  flex-shrink: 0;
   gap: 5px;
-  position: relative;
-  width: 190.667px;
   z-index: 4;
 }
 
-/* === 用户信息行内容器（横向排列）=== */
-/* 描述：将头像、用户名、图标横向排列 */
 .wrapper-2 {
   display: flex;
   align-items: center;
-  align-self: stretch;
-  flex-wrap: nowrap;
-  flex-shrink: 0;
-  gap: 12px;  /* 每个子元素的间隔 */
-  position: relative;
-  min-width: 0;
+  gap: 12px;
   z-index: 5;
 }
 
-/* === 用户头像图标样式 === */
-/* 描述：顶部头像 */
-.img {
-  flex-shrink: 0;
-  position: relative;
-  width: 22px;
-  height: 22px;
-  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/2tt6jVcQZX.png)
-    no-repeat center;
-  background-size: cover;
-  z-index: 6;
-}
-
-/* === 用户名文本样式 === */
-/* 描述：显示用户名的文字样式 */
 .text-2 {
-  flex-shrink: 0;
-  flex-basis: auto;
-  position: relative;
-  height: 32px;
   color: #000000;
   font-family: Source Han Sans CN, var(--default-font-family);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
-  line-height: 28px;
-  text-align: left;
-  white-space: nowrap;
-  z-index: 7;
 }
 
-/* === 用户图标按钮样式（右侧小图）=== */
-/* 描述：显示在用户名右边的小图标 */
-.pic {
-  flex-shrink: 0;
-  position: relative;
-  width: 20px;
-  height: 20px;
-  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/HFrPiKOevC.png)
-    no-repeat center;
-  background-size: cover;
-  z-index: 8;
-}
-
-/* === 用户信息下方的分隔线图样式 === */
-/* 描述：头像下面的横线 */
-.pic-2 {
-  flex-shrink: 0;
-  position: relative;
-  width: 150px;
-  height: 1.2px;
-  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/VRgLcOxR7i.png)
-    no-repeat center;
-  background-size: cover;
-  z-index: 9;
-}
-
-/* === 页面模糊背景图层样式 === */
-/* 描述：整页背景图（那个波浪，只有波浪）用于营造沉浸感 */
+/* === 页面模糊背景 === */
 .img-2 {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0px;
-  left: -3px;
-  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/cKjeepi8Ev.png)
-    no-repeat center;
-  background-size: cover;
-  opacity: 0.4;
-  filter: blur(4px);
-  z-index: 1;
+  position: fixed;
+  width: 100vw; height: 100vh;
+  top: 0; left: 0;
+  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/cKjeepi8Ev.png) no-repeat center / cover;
+  opacity: 0.4; filter: blur(4px);
+  z-index: 3; pointer-events: none;
 }
 
-/* === 大背景 === */
-/* 描述：大棕色背景面板 */
+/* === 中间地图及详情区 === */
 .box-2 {
-  position: absolute;
-  height: 100%;
-  top: 0;
-  right: 0;
-  left: 0;
-  background: #804430;
-}
-
-/* === 中间按钮样式：简介、历史、遗迹、文化 === */
-/* 描述：显示在弹窗左侧的四个点击按钮 （❗️提示：位置是在html里面设置的）*/
-.box-3 {
-  position: absolute;
-  width: 120px;
-  height: 60px;
-  left: 20px;
-  background: #804430;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 15px;
-  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.25);
-  transition: all 0.3s ease;
-}
-
-/* === 按钮中文字样式 === */
-/* 描述：简介、历史等按钮上的白色文字样式 */
-.text-4 {
-  width: auto;
-  height: auto;
-  color: #ffffff;
-  font-family: 'Ma Shan Zheng', Source Han Sans CN, var(--default-font-family);
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 24px;
-  text-align: center;
   position: relative;
-  z-index: 51;
-  white-space: nowrap;
+  width: 100%;
+  min-height: 750px;
+  background: #804430;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 140px 20px 40px; 
+  z-index: 2;
+  overflow: visible; 
 }
 
-/* === 右侧弹窗容器样式 === */
-/* 描述：点击按钮后显示的弹出框整体区域 */
+/* === 地图圆点 === */
+.map-dot {
+  width: 14px;
+  height: 14px;
+}
+
+/* === 地图区域 === */
+.pic-3 {
+  position: relative;
+  width: 100%;
+  max-width: 880px;
+  aspect-ratio: 880 / 473; 
+  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/V7nr5BkNBg.png) no-repeat center / contain;
+  z-index: 45;
+  margin: 0 auto;
+}
+
+/* === 详情弹窗 === */
 .section {
   position: absolute;
+  right: 0;
+  top: 135px;
   width: 600px;
   height: 610px;
-  top: 135px;
-  right: 0;
   background: #f2f2f2;
-  z-index: 46;
+  z-index: 500; /* 提升层级，确保在所有层级之上 */
   border-radius: 35px 0 0 35px;
   box-shadow: 5px 12px 8.3px 0 rgba(50, 23, 6, 0.4);
   transform: translateX(100%);
   opacity: 0;
   pointer-events: none;
   transition: transform 0.4s ease-out, opacity 0.3s ease-out;
+  display: flex;
+  align-items: flex-start;
+  padding: 30px;
 }
 
-/* === 弹窗可见状态样式 === */
-/* 描述：“弹窗”模式设置 */
 .section.visible {
   transform: translateX(0);
   opacity: 1;
   pointer-events: auto;
 }
 
-/* === 弹窗内部白色内容容器 === */
-/* 描述：弹窗中展示介绍文字的白色框框 */
-.section-2 {
+/* === 关闭按钮 === */
+.section-close-btn {
   position: absolute;
-  width: 270px;
-  height: 550px;
-  top: 27px;
-  left: 160px;
-  background: #ffffff;
-  z-index: 49;
-  border-radius: 16px;
-  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.25);
-} 
-
-/* === 弹窗介绍内容文字样式 === */
-/* 描述：右侧弹窗中展示的文字内容，可以滚动显示 */
-.text-3 {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  position: absolute;
-  width: 236px;
-  height: 433px;
-  top: 25px;
-  left: 25px;
-  color: #000000;
-  font-family: Source Han Sans CN, var(--default-font-family);
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 29px;
-  text-align: left;
-  z-index: 54;
-  overflow-y: auto;
-  word-break: break-word;
-  padding-right: 10px;
-  white-space: pre-wrap;
-}
-
-/* === 内容图片样式 === */
-.content-img {
-  position: absolute;
-  width: 140px;
-  height: auto;
   top: 20px;
-  left: 450px;
-  border-radius: 8px;
-  z-index: 48;
-  border-radius: 16px;
-  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.25);
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
-}
-
-/* === 地图样式=== */
-/* 描述：主要地图区域的装饰图 */
-.pic-3 {
-  position: absolute;
-  width: 880px;
-  height: 472.915px;
-  top: 150px;
-  left: 90px;
-  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/V7nr5BkNBg.png)
-    no-repeat center;
-  background-size: cover;
-  z-index: 44;
-}
-
-/* === 页面底部大模块整体区域 === */
-/* 描述：包括地理、历史、建筑、服饰、宗教等五个模块 */
-.section-4 {
-  position: absolute;
-  height: 580px;
-  top: 810px;
-  right: 0;
-  left: 0;
-  background: #f2f2f2;
-  z-index: 11;
-  border-radius: 52px 52px 0 0;
-  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.25);
-}
-
-/* === 内容展示容器 group === */
-/* 描述：包含底部所有内容板块的主要布局容器 */
-.group {
-  position: relative;
-  width: 1200px;
-  height: 491px;
-  margin: 5px auto 0 auto; /* 控制底部的元素左右对齐 */
-  z-index: 39;
-}
-
-/* === 底部模块提示文字样式 === */
-.section-tip {
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  background: #804430;
+  color: #fff;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  line-height: 1;
+  padding-bottom: 2px;
+}
+
+.section-close-btn:hover {
+  background: #caa08c;
+  transform: scale(1.1) rotate(90deg);
+}
+
+/* === 侧边栏按钮 === */
+.section-tabs {
   position: absolute;
-  top: 8px;
+  left: 20px;
+  top: 0;
+  height: 100%;
+}
+
+.box-3 {
+  position: absolute;
   left: 0;
-  right: 0;
-  z-index: 15;
+  width: 120px;
+  height: 60px;
+  background: #804430;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  z-index: 50;
+}
+
+/* 恢复原有的绝对定位top值 */
+.box-3:nth-child(1) { top: 30px; }
+.box-3:nth-child(2) { top: 100px; }
+.box-3:nth-child(3) { top: 170px; }
+.box-3:nth-child(4) { top: 240px; }
+.box-3:nth-child(5) { top: 310px; }
+.box-3:nth-child(6) { top: 380px; }
+.box-3:nth-child(7) { top: 450px; }
+.box-3:nth-child(8) { top: 520px; }
+
+
+.box-3:hover {
+  background-color: #caa08c;
+  transform: scale(1.05);
+}
+
+.text-4 {
+  color: #ffffff;
+  font-family: 'Ma Shan Zheng', Source Han Sans CN, var(--default-font-family);
+  font-size: 20px;
+  z-index: 51;
+}
+
+/* === 详情内容区 === */
+.section-content-wrapper {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 130px; /* 为左侧绝对定位的box-3留出空间 */
+}
+
+.section-2 {
+  width: 100%;
+  height: 100%; 
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.25);
+  padding: 25px;
+  overflow-y: auto;
+}
+
+.text-3 {
+  color: #000000;
+  font-family: Source Han Sans CN, var(--default-font-family);
+  font-size: 16px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.content-img {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  margin-top: 20px;
+  border-radius: 16px;
+  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.25);
+  align-self: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.content-img:hover {
+  transform: scale(1.05);
+}
+
+/* === 底部模块区域 === */
+.section-4 {
+  position: relative;
+  width: 100%;
+  background: #f2f2f2;
+  z-index: 11;
+  border-radius: 52px 52px 0 0;
+  box-shadow: 0px -12px 24px rgba(0, 0, 0, 0.15);
+  padding: 40px 20px 100px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.section-tip {
+  margin-bottom: 20px;
 }
 
 .tip-text {
   color: #666666;
   font-family: Source Han Sans CN, var(--default-font-family);
   font-size: 14px;
-  font-weight: 500;
-  line-height: 22px;
-  text-align: center;
-  white-space: nowrap;
 }
 
-
-/* === 竖排文字 === */
-/* 描述：在五个模块上显示的文字 */
-.text-7 {
+.group {
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* === 底部5个分类卡片 === */
+.pic-4, .img-3, .pic-7, .mask-group, .mask-group-2 {
+  position: relative;
+  width: 133px;
+  height: 491px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.pic-4 { background-image: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/yTif46Rpoy.png); }
+.img-3 { background-image: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/TTqBvYDeiV.png); }
+.pic-7 { background-image: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/Tbp5ZLYcSO.png); }
+.mask-group { background-image: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/vuYAqFRrzS.png); }
+.mask-group-2 { background-image: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/F33i5EZNNJ.png); height: 429px; margin-top: 62px; }
+
+.pic-4:hover, .img-3:hover, .pic-7:hover, .mask-group:hover, .mask-group-2:hover {
+  transform: scale(1.05);
+}
+
+.geography, .history, .building, .clothing, .religion {
   position: absolute;
-  width: 51px;
-  height: 231px;
-  top: 77px;
-  left: 41px;
+  bottom: 0; left: 0; right: 0;
+  height: 70%;
+  background: linear-gradient(to bottom, rgba(179, 124, 105, 0) 0%, #b37c69 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  transition: all 0.3s ease;
+}
+
+.geography:hover, .history:hover, .building:hover, .clothing:hover, .religion:hover {
+  background: transparent;
+}
+
+.text-7 {
   color: #ffffff;
   font-family: 'Ma Shan Zheng', Source Han Sans CN, var(--default-font-family);
   font-size: 48px;
-  font-weight: 400;
-  line-height: 57.6px;
-  text-align: left;
-  z-index: 50;
+  writing-mode: vertical-rl;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  z-index: 2;
 }
 
-/* === 图标图层 - 地理模块背景图 === */
-/* 描述：地理图标的装饰背景图片 */
-.pic-4 {
-  position: absolute;
-  width: 133px;
-  height: 491px;
-  top: 0;
-  left: 0;
-  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/yTif46Rpoy.png)
-    no-repeat center;
-  background-size: cover;
-  z-index: 24;
-}
-
-/* === 图标图层 === */
-/* 描述：显示在模块下面的棕色装饰 */
 .pic-5 {
   position: absolute;
+  bottom: 0; left: 0; right: 0;
   height: 259px;
-  top: 97px;
-  right: 0;
-  left: 0;
-  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/QOgO7wWHFw.png)
-    no-repeat center;
-  background-size: cover;
-  z-index: 25;
+  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/QOgO7wWHFw.png) no-repeat bottom / contain;
+  z-index: 1;
 }
 
-/* === 渐变背景区域 - 地理模块 === */
-/* 描述：地理模块按钮的渐变和控制按钮（❗️这几个不能合并 因为有实现切换文字功能）之后有空把这个功能整合到图片里这样代码更清晰 */
-.geography {
-  position: relative;
-  width: 133px;
-  height: 356px;
-  margin: 135px 0 0 0;
-  background: linear-gradient(to bottom, rgba(179, 124, 105, 0) 0%, #b37c69 100%);
-  z-index: 23;
-  transition: all 0.3s ease;
-}
-
-/* === 图标图层 - 历史模块背景图 === */
-/* 描述：历史模块的装饰背景图 */
-.img-3 {
-  position: absolute;
-  width: 133px;
-  height: 491px;
-  top: 0;
-  left: 153px;
-  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/TTqBvYDeiV.png)
-    no-repeat center;
-  background-size: cover;
-  z-index: 23;
-}
-
-/* === 渐变背景区域 - 历史模块 === */
-/* 描述：历史模块按钮的渐变和控制按钮 */
-.history {
-  position: relative;
-  width: 133px;
-  height: 356px;
-  margin: 135px 0 0 0;
-  background: linear-gradient(to bottom, rgba(179, 124, 105, 0) 0%, #b37c69 100%);
-  z-index: 23;
-  transition: all 0.3s ease;
-}
-
-/* === 图标图层 - 建筑模块背景图 === */
-/* 描述：建筑图标的底部背景图层 */
-.pic-7 {
-  position: absolute;
-  width: 133px;
-  height: 491px;
-  top: 0;
-  left: 458px;
-  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/Tbp5ZLYcSO.png)
-    no-repeat center;
-  background-size: cover;
-  z-index: 24;
-}
-
-/* === 渐变背景区域 - 建筑模块 === */
-/* 描述：建筑模块按钮的渐变和控制按钮 */
-.building{
-  position: relative;
-  width: 133px;
-  height: 356px;
-  margin: 135px 0 0 0;
-  background: linear-gradient(to bottom, rgba(179, 124, 105, 0) 0%, #b37c69 100%);
-  z-index: 25;
-}
-
-/* === 图标图层 - 服饰模块背景图 === */
-/* 描述：服饰模块的底部背景图层 */
-.mask-group {
-  position: absolute;
-  width: 133px;
-  height: 491px;
-  top: 0;
-  left: 610px;
-  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/vuYAqFRrzS.png)
-    no-repeat center;
-  background-size: cover;
-  z-index: 19;
-}
-
-/* === 渐变背景区域 - 服饰模块 === */
-/* 描述：服饰模块按钮的渐变和控制按钮 */
-.clothing {
-  position: relative;
-  width: 133px;
-  height: 356px;
-  margin: 135px 0 0 0;
-  background: linear-gradient(to bottom, rgba(179, 124, 105, 0) 0%, #b37c69 100%);
-  z-index: 23;
-  transition: all 0.3s ease;
-}
-
-/* === 图标图层 - 宗教模块背景图 === */
-/* 描述：宗教模块的底部背景图层 */
-.mask-group-2 {
-  position: absolute;
-  width: 133px;
-  height: 429px;
-  top: 62px;
-  left: 306px;
-  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/F33i5EZNNJ.png)
-    no-repeat center;
-  background-size: cover;
-  z-index: 34;
-}
-
-/* === 渐变背景区域 - 宗教模块 === */
-/* 描述：宗教模块按钮的渐变和控制按钮 */
-.religion {
-  position: relative;
-  width: 133px;
-  height: 356px;
-  margin: 73px 0 0 0;
-  background: linear-gradient(to bottom, rgba(179, 124, 105, 0) 0%, #b37c69 100%);
-  z-index: 23;
-}
-
-/* === 白色信息展示框（中部右侧文字区域）=== */
-/* 描述：用于展示乌兹别克斯坦长段介绍文字的背景框 */
+/* === 文字介绍长框 === */
 .rectangle {
-  position: absolute;
-  height: 356px;
-  top: 135px;
-  right: 0;
-  left: 610px;
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
   background: #ffffff;
-  z-index: 15;
-  border-radius: 4px;
-}
-
-/* === 内容容器 - 包含文字 === */
-/* 描述：包含正文介绍文字的容器 */
-.pic-b {
-  position: relative;
-  width: 470px;
-  height: 333px;
-  margin: 0 0 0 133px;
-  z-index: 42;
-}
-
-/* === 右侧详细文字内容样式 === */
-/* 描述：用于展示长段文字内容的正文区域 */
-.text-c {
+  border-radius: 12px;
+  padding: 30px;
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  position: absolute;
-  width: 426px;
-  height: 310px;
-  top: 12.276px;
-  left: 20px;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0px 12px 24px rgba(0,0,0,0.1);
+  margin-top: 62px; 
+}
+
+.text-c {
   color: #000000;
   font-family: Source Han Sans CN, var(--default-font-family);
   font-weight: 500;
-  line-height: 27.5px;
-  text-align: left;
-  z-index: 43;
-  overflow-y: auto;
-  word-break: break-word;
-  padding-right: 10px;
+  line-height: 1.8;
+  font-size: 15px;
+  flex: 1;
 }
 
-/* === “点击查看详情”按钮容器 === */
-/* 描述：包含按钮与图标，位于右下角 */
 .section-7 {
   display: flex;
+  justify-content: flex-end;
   align-items: center;
-  justify-content: space-between;
-  position: relative;
-  width: 87px;
-  height: 17px;
-  margin: -9px 0 0 482px;
-  z-index: 56;
+  margin-top: 20px;
 }
 
-/* 底部"点击查看详情“文本样式 */
-.text-d {
-  flex-shrink: 0;
-  position: relative;
-  height: 17px;
+.detail-button button {
+  background-color: transparent;
   color: rgba(77, 77, 77, 0.8);
-  font-family: Source Han Sans CN, var(--default-font-family);
+  border: none;
   font-size: 12px;
-  font-weight: 500;
-  line-height: 16.5px;
-  text-align: left;
-  white-space: nowrap;
-  z-index: 55;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
-/* === 按钮右边的小图标 === */
-/* 描述：用于点击跳转时的视觉提示图标 */
+.detail-button button:hover {
+  color: #000000;
+  transform: scale(1.05);
+}
+
 .pic-c {
-  flex-shrink: 0;
-  position: relative;
-  width: 14px;
-  height: 14px;
-  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/03nXjxnJTe.png)
-    no-repeat center;
-  background-size: cover;
+  width: 14px; height: 14px;
+  background: url(https://codia-f2c.s3.us-west-1.amazonaws.com/image/2025-04-14/03nXjxnJTe.png) no-repeat center / cover;
   opacity: 0.5;
-  z-index: 56;
 }
 
-/* === 页面最底部的组员信息区域 === */
-/* 描述：显示“组员信息”的棕色底部栏 */
+/* === 底部版权区 === */
 .section-8 {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 60px;
+  background: #804430;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  width: 100%;
-  height: 60px;
-  left: 0; right: 0;
-  margin: 65px 0 0 0;
-  bottom: 0;
-  background: #804430;
   z-index: 14;
 }
 
-/* === 最底部文字样式（组员信息）=== */
-/* 描述：在底栏中显示白色小字，内容为组员信息等 */
 .text-e {
-  flex-shrink: 0;
-  position: relative;
-  height: 15px;
   color: #ffffff;
-  font-family: Source Han Sans CN, var(--default-font-family);
-  font-size: 10px;
-  font-weight: 500;
-  line-height: 33px;
-  text-align: left;
-  white-space: nowrap;
-  z-index: 14;
+  font-size: 12px;
+  text-align: center;
+  padding: 0 20px;
 }
 
-/* === 查看详情按钮样式 === */
-/* 描述：跳转至详情页的按钮样式 */
-.detail-button button {
-  background-color: #80443000;
-  color: #000000;
-  border: none;
-  width: 80px;
-  height: 18px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-/* === 鼠标悬停时按钮样式变化 === */
-/* 描述：鼠标悬停按钮时按钮变白、带阴影、放大一点 */
-.detail-button button:hover {
-  background-color: #ffffff;
-  transform: scale(1.05);
-  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.25);
-}
-
-/* === 五个图标模块 hover 效果 === */
-/* 描述：鼠标悬停时模块放大一点，增加视觉反馈 */
-.pic-4:hover,
-.img-3:hover,
-.pic-7:hover,
-.mask-group:hover,
-.mask-group-2:hover {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
-}
-
-/* === 各大模块按钮 hover 效果 === */
-/* 描述：去除背景颜色，轻微缩放，用于地理、历史、建筑等 */
- .geography:hover,
-  .history:hover,
-  .building:hover,
-  .clothing:hover,
-  .religion:hover {
-   background: transparent;
-   transform: scale(1.05);
- }
-
-/* 放大图片预览样式 */
+/* === 图片放大模态框 === */
 .image-modal {
   display: none;
   position: fixed;
-  z-index: 999;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.7);
+  z-index: 9999;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0,0,0,0.8);
   justify-content: center;
   align-items: center;
 }
 
-/* 弹窗内部图片 */
 .image-modal-content {
-  max-width: 80%;
-  max-height: 80%;
+  max-width: 90%;
+  max-height: 90%;
   border-radius: 10px;
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
   box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.4);
 }
 
-/* === 左侧简介/历史等按钮的悬停效果 === */
-/* 描述：鼠标悬停按钮时背景变浅棕，略微放大 */
-.box-3:hover {
-  background-color: #caa08c;
-  transform: scale(1.05);
-  
-}
-
-.geography:hover,
- .history:hover,
- .building:hover,
- .clothing:hover,
- .religion:hover {
-  background: transparent;
-  transform: scale(1.05);
-}
-
-
-/* 返回主页按钮 */
+/* === 返回按钮 === */
 .back-home {
   position: fixed;
   top: 20px;
@@ -744,8 +458,156 @@ input,select,textarea,button {
   z-index: 1000;
   font-family: Source Han Sans CN, var(--default-font-family);
   font-size: 14px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  transition: all .2s ease;
 }
-.back-home:hover { transform: translateY(-1px) scale(1.03); box-shadow: 0 10px 20px rgba(0,0,0,0.2); background:#2a9bff; }
-.back-home:active { transform: translateY(0) scale(0.98); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+
+.back-home:hover {
+  background: #2a9bff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+/* ========================================================= */
+/* 响应式断点 (Responsive Breakpoints) */
+/* ========================================================= */
+
+/* 平板及竖屏设备 */
+@media screen and (max-width: 1024px) {
+  .box-2 {
+    padding-top: 160px;
+    align-items: flex-start;
+  }
+  
+  .section {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0; right: 0;
+    width: 100%;
+    height: 75vh; /* 增加高度以更好展示内容 */
+    border-radius: 35px 35px 0 0;
+    flex-direction: column;
+    transform: translateY(100%);
+    padding: 20px;
+    z-index: 500;
+  }
+
+  .section.visible {
+    transform: translateY(0);
+  }
+
+  .section-close-btn {
+    top: 10px;
+    right: 10px;
+  }
+
+  .section-tabs {
+    position: relative;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    margin-right: 0;
+    margin-bottom: 20px;
+    overflow-x: auto; 
+    padding-bottom: 10px;
+  }
+
+  .box-3 {
+    position: relative;
+    top: 0 !important;
+    flex-shrink: 0;
+    width: 100px; height: 40px;
+    margin-right: 15px;
+  }
+  
+  .text-4 { font-size: 16px; }
+
+  .map-dot {
+    width: 2vw;
+    height: 2vw;
+    min-width: 10px;
+    min-height: 10px;
+  }
+
+  .section-content-wrapper {
+    width: 100%;
+    margin-left: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* 允许内容区域滚动 */
+  }
+
+  .section-2 {
+    min-height: 220px; /* 确保至少显示约 5 行文字 */
+    flex: 0 0 auto;
+    padding: 20px;
+  }
+
+  .content-img {
+    max-width: 100%;
+    margin-top: 15px;
+    flex: 0 0 auto;
+  }
+
+  .group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 15px;
+  }
+
+  .mask-group-2 {
+    margin-top: 0;
+    height: 491px;
+  }
+  
+  .rectangle {
+    grid-column: 1 / -1;
+    margin-top: 20px;
+    max-width: 100%;
+  }
+}
+
+/* 手机设备 */
+@media screen and (max-width: 768px) {
+  .box {
+    padding: 15px;
+    border-radius: 0 0 30px 30px;
+  }
+
+  .text {
+    font-size: 24px;
+  }
+  
+  .wrapper {
+    display: none; 
+  }
+
+  .back-home {
+    top: 80px;
+    left: 10px;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .section-4 {
+    border-radius: 30px 30px 0 0;
+  }
+
+  .group {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 针对特别矮的横屏设备优化 */
+@media screen and (orientation: landscape) and (max-height: 600px) {
+  .box-2 {
+    min-height: 100vh;
+  }
+  .section {
+    height: 80vh;
+    top: 10vh;
+  }
+}
