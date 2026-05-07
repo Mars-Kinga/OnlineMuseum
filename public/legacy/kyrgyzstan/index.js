@@ -168,14 +168,45 @@ document.addEventListener("DOMContentLoaded", function () {
     ".funfact": "“离海最远”的极致内陆国\n吉尔吉斯斯坦是世界上最内陆的国家之一，从国境线到任何海洋的距离都在3000公里以上。但伊塞克湖的存在让当地人产生了一种错觉：“我们有自己的海。”湖边甚至有一座苏联时期的“海军基地”，用于鱼雷测试。\n\n苏联潜艇在高原湖：冷战时期，苏联海军在伊塞克湖设有一个绝密的鱼雷试验基地，至今湖底仍沉睡着多艘废弃的试验潜艇。一个高山内陆国居然有“潜艇残骸潜水”的旅游项目。\n\n虽然国际上普遍认为核桃原产波斯，但吉尔吉斯斯坦坚称阿尔斯兰博布的野生核桃林才是正源。2017年，一株树龄约1200年的“核桃王”被列为国家自然遗产，当地新婚夫妇要绕树三圈以求多子多福。\n\n天然冰箱：山区牧民至今沿用一种古老的肉类保存法——将宰杀后的羊腔缝合后埋入冰川边缘的冻土层，可以保鲜数年之久。这种“冰川羊肉”取出时色泽如新，是招待贵客的最高礼遇。\n\n这个国家拥有中亚最大的核桃林，却几乎不出口核桃；拥有世界级的高山湖泊，却因为污染问题禁止大规模渔业；拥有无与伦比的夏季牧场，却将大部分牛羊肉出口给邻国。\n\n李白出生地的“户口之争”\n碎叶城是李白的出生地这一说法，主要依据是李阳冰《草堂集序》与范传正《唐左拾遗翰林学士李公新墓碑》的记载。但考古发掘显示，碎叶城在唐代确实存在完整的汉式官署建筑群，其规模与等级完全符合安西四镇的建制。至于李白是否真在此生活过——他的诗歌中从未提及天山雪峰，这本身就是一个有趣的文学悬案。\n\n玄奘笔下的“大清池”\n公元630年，玄奘西行途经伊塞克湖，在《大唐西域记》中留下了关于“大清池”的精确记载：“周千余里，东西长，南北狭。四面负山，众流交凑，色带青黑，味兼咸苦。”这是世界上对伊塞克湖最早的科学描述之一，比俄国探险家的测绘早了整整1200年。\n\n女汗王的传奇人生\n库尔曼江·达特卡（1811—1907）是中亚近代史上最传奇的女性人物。她出身普通牧民家庭，因智慧超群被阿赖部落推举为统治者，浩罕汗国和沙俄都不得不承认其权威。晚年她被迫亲眼目睹自己的儿子因反俄起义被处决，从此深居简出，终身缟素。她的肖像至今印在吉尔吉斯斯坦50索姆纸币上。"
   };
 
+  const overviewTextBox = document.querySelector(".rectangle");
+  const overviewTextContent = document.querySelector(".text-c");
+  const overviewGroup = document.querySelector(".group");
+  const mobileQuery = window.matchMedia("(max-width: 768px)");
+
+  const placeOverviewBox = (button) => {
+    if (!overviewTextBox || !overviewGroup) return;
+
+    if (mobileQuery.matches && button) {
+      const card = button.closest(".pic-4, .img-3, .pic-7, .mask-group, .mask-group-2");
+      if (card) {
+        card.insertAdjacentElement("afterend", overviewTextBox);
+        return;
+      }
+    }
+
+    overviewGroup.appendChild(overviewTextBox);
+  };
+
   Object.keys(buttonContentMap).forEach(selector => {
     const button = document.querySelector(selector);
-    if (button) {
+    if (button && overviewTextContent) {
       button.addEventListener("click", () => {
-        document.querySelector(".text-c").textContent = buttonContentMap[selector];
+        overviewTextContent.textContent = buttonContentMap[selector];
+        placeOverviewBox(button);
       });
     }
   });
+
+  const handleOverviewLayoutChange = () => {
+    if (!overviewTextBox || !overviewGroup) return;
+
+    if (!mobileQuery.matches) {
+      overviewGroup.appendChild(overviewTextBox);
+    }
+  };
+
+  handleOverviewLayoutChange();
+  mobileQuery.addEventListener("change", handleOverviewLayoutChange);
   
   // 图片点击放大预览逻辑
   const contentImg = document.querySelector(".content-img");

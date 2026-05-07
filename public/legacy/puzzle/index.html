@@ -176,6 +176,68 @@
                 grid-template-columns: 1fr;
             }
         }
+
+                /* ===== 移动端首页单独适配：不影响原有网页端 ===== */
+        @media screen and (max-width: 768px) {
+            body {
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding: 14px 0 20px;
+            }
+
+            .main-container {
+                width: calc(100vw - 24px);
+                max-width: none;
+                max-height: none;
+                margin: 12px;
+                padding: 18px 14px 22px;
+                border-width: 2px;
+                border-radius: 18px;
+                box-sizing: border-box;
+            }
+
+            .back-home {
+                align-self: center;
+                width: 100%;
+                max-width: 220px;
+                margin-bottom: 16px;
+                text-align: center;
+                box-sizing: border-box;
+            }
+
+            h1 {
+                font-size: 22px;
+                line-height: 1.25;
+                margin-bottom: 10px;
+            }
+
+            .main-container > p {
+                font-size: 15px;
+                line-height: 1.6;
+                margin: 0 0 16px;
+            }
+
+            .nav-container {
+                grid-template-columns: 1fr;
+                gap: 22px;
+                margin: 18px 0 0;
+            }
+
+            .nav-item {
+                max-width: none;
+            }
+
+            .nav-item img {
+                width: 150px;
+                height: 150px;
+                margin-bottom: 14px;
+            }
+
+            .nav-item h3 {
+                font-size: 20px;
+                line-height: 1.35;
+            }
+        }
     </style>
 </head>
 

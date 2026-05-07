@@ -176,14 +176,45 @@ document.addEventListener("DOMContentLoaded", function () {
     ".funfact": "1. “我们真的不在哈萨克斯坦！”——面积梗王\n哈萨克斯坦的国土面积可以装下整个西欧，却只有1800万人口（相当于北京常住人口）。在这里，你可以开车一整天都看不到一个人影，但可能会遇见成群的野马——毕竟这里的马比人多3倍！\n\n2. 地理课代表的噩梦\n• 同时存在沙漠（克孜勒库姆沙漠）、雪山（天山山脉）、草原（欧亚大草原）和内陆海（里海）\n• 官方时区是UTC+6，但实际横跨两个时区\n• 首都从阿拉木图搬到阿斯塔纳（现名努尔苏丹），因为...总统觉得这里太靠边了\n\n3. 离谱的冷知识\n• 拜科努尔航天发射场：人类首个太空人加加林就是从这里上天的，但...这个“哈萨克斯坦的航天中心”至今租给俄罗斯使用\n• 苹果的祖籍：阿拉木图在哈萨克语意为“苹果之城”，现代苹果的基因溯源都指向这里的野生苹果林\n• 魔幻建筑收集癖：新首都努尔苏丹有座“生命之树”观景塔，晚上亮灯像巨型外星玉米棒\n\n4. 地理课不会教你的\n当地人说“我们哈萨克人骑马不用学”——小孩3岁就被抱上马背，传统婚礼要抢“姑娘追”，新郎策马狂奔时新娘可以拿鞭子抽他（真·硬核婚俗）\n\n5. 终极地理悖论\n这个国家用俄语字母拼写哈萨克语，用坚戈当货币，用“你是我的灵魂”当国歌歌词，还发明了用马奶发酵的碳酸饮料（喝起来像啤酒+酸奶的混合体）——建议地理考试时直接放弃理解 "
   };
 
+  const overviewTextBox = document.querySelector(".rectangle");
+  const overviewTextContent = document.querySelector(".text-c");
+  const overviewGroup = document.querySelector(".group");
+  const mobileQuery = window.matchMedia("(max-width: 768px)");
+
+  const placeOverviewBox = (button) => {
+    if (!overviewTextBox || !overviewGroup) return;
+
+    if (mobileQuery.matches && button) {
+      const card = button.closest(".pic-4, .img-3, .pic-7, .mask-group, .mask-group-2");
+      if (card) {
+        card.insertAdjacentElement("afterend", overviewTextBox);
+        return;
+      }
+    }
+
+    overviewGroup.appendChild(overviewTextBox);
+  };
+
   Object.keys(buttonContentMap).forEach(selector => {
     const button = document.querySelector(selector);
-    if (button) {
+    if (button && overviewTextContent) {
       button.addEventListener("click", () => {
-        document.querySelector(".text-c").textContent = buttonContentMap[selector];
+        overviewTextContent.textContent = buttonContentMap[selector];
+        placeOverviewBox(button);
       });
     }
   });
+
+  const handleOverviewLayoutChange = () => {
+    if (!overviewTextBox || !overviewGroup) return;
+
+    if (!mobileQuery.matches) {
+      overviewGroup.appendChild(overviewTextBox);
+    }
+  };
+
+  handleOverviewLayoutChange();
+  mobileQuery.addEventListener("change", handleOverviewLayoutChange);
   
   // 图片点击放大预览逻辑
   const contentImg = document.querySelector(".content-img");
