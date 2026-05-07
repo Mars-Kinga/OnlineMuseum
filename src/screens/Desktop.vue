@@ -94,24 +94,7 @@
 
     <!-- 移动端菜单：汉堡菜单展开时显示 -->
     <div class="mobile-menu" :class="{ open: isMenuOpen }">
-      <!-- 移动端用户信息区 -->
-      <div class="mobile-user-section">
-        <div class="p">
-          <span class="span">中</span>
-          <span class="text-wrapper-7">/英</span>
-        </div>
-        <div class="frame">
-          <div class="div">
-            <img class="ps" alt="Ps" src="/img/ps-4.png" />
-            <div class="text-wrapper">kitten123</div>
-            <img
-              class="element-BE"
-              alt="Element BE"
-              src="/img/3-e5-9b-be-e6-a0-87-3x-1.png"
-            />
-          </div>
-        </div>
-      </div>
+      
       <!-- 移动端导航 -->
       <div class="mobile-nav">
         <div class="nav-item active">首页</div>
@@ -707,7 +690,7 @@ const getTooltip = (dot) => {
   left: 0;
   width: 100%;
   background: #fff;
-  z-index: 100;
+  z-index: 130;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   max-height: 0;
   overflow: hidden;
@@ -717,6 +700,7 @@ const getTooltip = (dot) => {
 /* 移动端菜单展开状态 */
 .mobile-menu.open {
   max-height: 500px;
+  z-index: 130;
 }
 
 /* 移动端用户信息区 */

@@ -198,14 +198,45 @@ document.addEventListener("DOMContentLoaded", function () {
     ".religion": "在这片被沙漠与绿洲分割的土地上，宗教如同锡尔河的水流，时而奔腾，时而静谧，最终汇成宽容的海洋。乌兹别克斯坦的信仰史，是一部文明对话的史诗——祆教的圣火、佛教的莲花、伊斯兰的新月，甚至基督教的十字架，都曾在这片土地上留下印记。"
   };
 
+  const overviewTextBox = document.querySelector(".rectangle");
+  const overviewTextContent = document.querySelector(".text-c");
+  const overviewGroup = document.querySelector(".group");
+  const mobileQuery = window.matchMedia("(max-width: 768px)");
+
+  const placeOverviewBox = (button) => {
+    if (!overviewTextBox || !overviewGroup) return;
+
+    if (mobileQuery.matches && button) {
+      const card = button.closest(".pic-4, .img-3, .pic-7, .mask-group, .mask-group-2");
+      if (card) {
+        card.insertAdjacentElement("afterend", overviewTextBox);
+        return;
+      }
+    }
+
+    overviewGroup.appendChild(overviewTextBox);
+  };
+
   Object.keys(buttonContentMap).forEach(selector => {
     const button = document.querySelector(selector);
-    if (button) {
+    if (button && overviewTextContent) {
       button.addEventListener("click", () => {
-        document.querySelector(".text-c").textContent = buttonContentMap[selector];
+        overviewTextContent.textContent = buttonContentMap[selector];
+        placeOverviewBox(button);
       });
     }
   });
+
+  const handleOverviewLayoutChange = () => {
+    if (!overviewTextBox || !overviewGroup) return;
+
+    if (!mobileQuery.matches) {
+      overviewGroup.appendChild(overviewTextBox);
+    }
+  };
+
+  handleOverviewLayoutChange();
+  mobileQuery.addEventListener("change", handleOverviewLayoutChange);
   
   // 图片点击放大预览逻辑
   const contentImg = document.querySelector(".content-img");

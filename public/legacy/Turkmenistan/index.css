@@ -196,12 +196,9 @@ input, select, textarea, button {
 
 /* 恢复原有的绝对定位top值 */
 .box-3:nth-child(1) { top: 30px; }
-.box-3:nth-child(2) { top: 110px; }
-.box-3:nth-child(3) { top: 190px; }
-.box-3:nth-child(4) { top: 270px; }
-.box-3:nth-child(5) { top: 350px; }
-.box-3:nth-child(6) { top: 430px; }
-.box-3:nth-child(7) { top: 510px; }
+.box-3:nth-child(2) { top: 190px; }
+.box-3:nth-child(3) { top: 350px; }
+.box-3:nth-child(4) { top: 510px; }
 
 
 .box-3:hover {
@@ -558,19 +555,42 @@ input, select, textarea, button {
     margin-left: 0;
     display: flex;
     flex-direction: column;
-    overflow-y: auto; /* 允许内容区域滚动 */
+    overflow-y: auto;
+    min-height: 0;
   }
 
   .section-2 {
-    min-height: 220px; /* 确保至少显示约 5 行文字 */
-    flex: 0 0 auto;
+    min-height: 0;
+    height: 100%;
+    flex: 1 1 auto;
     padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
   .content-img {
+    display: block;
+    width: 100%;
     max-width: 100%;
-    margin-top: 15px;
+    height: auto;
+    margin-top: 0;
     flex: 0 0 auto;
+    align-self: stretch;
+    object-fit: cover;
+    border-radius: 16px;
+  }
+
+  .section-2::-webkit-scrollbar,
+  .section-content-wrapper::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .section-2::-webkit-scrollbar-thumb,
+  .section-content-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(128, 68, 48, 0.22);
+    border-radius: 999px;
   }
 
   .group {
@@ -603,6 +623,31 @@ input, select, textarea, button {
   .text {
     font-size: 24px;
   }
+
+  .box-2 {
+    min-height: 430px;
+    padding: 118px 12px 12px;
+    align-items: flex-start;
+  }
+
+  .pic-3 {
+    max-width: 520px;
+    width: 100%;
+  }
+
+  .section-4 {
+    margin-top: -12px;
+    padding: 22px 12px 90px;
+    border-radius: 30px 30px 0 0;
+  }
+
+  .section-tip {
+    margin-bottom: 14px;
+  }
+
+  .tip-text {
+    font-size: 13px;
+  }
   
   .wrapper {
     display: none; 
@@ -620,7 +665,69 @@ input, select, textarea, button {
   }
 
   .group {
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    width: 100%;
+  }
+
+  .pic-4,
+  .img-3,
+  .pic-7,
+  .mask-group,
+  .mask-group-2 {
+    width: 100%;
+    max-width: 100%;
+    height: 140px;
+    border-radius: 18px;
+    background-position: center;
+    background-size: cover;
+    margin-top: 0;
+  }
+
+  .geography,
+  .history,
+  .industry,
+  .ethnicity,
+  .funfact {
+    height: 100%;
+    background: linear-gradient(to right, rgba(179, 124, 105, 0.88) 0%, rgba(179, 124, 105, 0.7) 45%, rgba(179, 124, 105, 0.08) 100%);
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0 24px;
+  }
+
+  .text-7 {
+    writing-mode: horizontal-tb;
+    font-size: 34px;
+    margin-bottom: 0;
+    line-height: 1;
+  }
+
+  .pic-5 {
+    display: none;
+  }
+
+  .rectangle {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 220px;
+    max-height: 320px;
+    margin-top: 10px;
+    padding: 18px 16px;
+    border-radius: 18px;
+  }
+
+  .text-c {
+    font-size: 14px;
+    line-height: 1.8;
+    padding-right: 8px;
+  }
+
+  .section-7 {
+    margin-top: 14px;
   }
 }
 
